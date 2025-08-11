@@ -1,0 +1,636 @@
+INFO 2025-08-05 16:48:36,124 autoreload 19284 5512 Watching for file changes with StatReloader
+WARNING 2025-08-05 16:49:19,808 log 19284 17440 Not Found: /favicon.ico
+INFO 2025-08-05 16:49:35,064 autoreload 19284 5512 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\chronoconnect\settings.py changed, reloading.
+INFO 2025-08-05 16:49:36,155 autoreload 11992 20736 Watching for file changes with StatReloader
+WARNING 2025-08-05 16:54:55,346 log 11992 18356 Unauthorized: /api/marketplace/cart/
+INFO 2025-08-05 16:58:58,102 autoreload 11992 20736 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\chronoconnect\settings.py changed, reloading.
+INFO 2025-08-05 16:59:00,337 autoreload 16412 908 Watching for file changes with StatReloader
+WARNING 2025-08-05 17:17:55,785 log 16412 22564 Not Found: /api/auth/login/
+WARNING 2025-08-05 17:18:54,232 log 16412 22564 Not Found: /api/auth/login/
+WARNING 2025-08-05 22:20:25,715 log 16412 27028 Not Found: /api/auth/login/
+WARNING 2025-08-05 22:51:16,576 log 16412 11660 Not Found: /api/auth/login/
+WARNING 2025-08-05 22:53:09,983 log 16412 11660 Not Found: /api/auth/register/
+WARNING 2025-08-05 23:01:50,228 log 16412 17572 Bad Request: /api/users/login/
+INFO 2025-08-05 23:45:31,426 autoreload 16412 908 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\chronoconnect\settings.py changed, reloading.
+INFO 2025-08-05 23:45:35,531 autoreload 6968 400 Watching for file changes with StatReloader
+INFO 2025-08-06 08:36:46,676 autoreload 6968 400 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\users\views.py changed, reloading.
+INFO 2025-08-06 08:36:48,039 autoreload 16976 18292 Watching for file changes with StatReloader
+INFO 2025-08-06 08:38:52,443 autoreload 16976 18292 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\users\views.py changed, reloading.
+INFO 2025-08-06 08:38:53,562 autoreload 21196 21200 Watching for file changes with StatReloader
+INFO 2025-08-06 08:38:58,594 autoreload 21196 21200 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\users\urls.py changed, reloading.
+INFO 2025-08-06 08:38:59,526 autoreload 13432 14596 Watching for file changes with StatReloader
+INFO 2025-08-06 08:42:57,493 autoreload 13432 14596 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\users\views.py changed, reloading.
+INFO 2025-08-06 08:42:58,713 autoreload 21284 21408 Watching for file changes with StatReloader
+WARNING 2025-08-06 08:49:57,175 log 21284 13956 Unauthorized: /api/users/profile/
+WARNING 2025-08-06 08:52:40,132 log 21284 13956 Unauthorized: /api/users/profile/
+INFO 2025-08-06 09:00:50,647 autoreload 21284 21408 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\models.py changed, reloading.
+INFO 2025-08-06 09:00:51,806 autoreload 19604 10164 Watching for file changes with StatReloader
+INFO 2025-08-06 09:01:11,014 autoreload 19604 10164 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\models.py changed, reloading.
+INFO 2025-08-06 09:01:12,258 autoreload 26072 2728 Watching for file changes with StatReloader
+INFO 2025-08-06 09:02:12,444 autoreload 26072 2728 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 09:02:13,384 autoreload 26892 8732 Watching for file changes with StatReloader
+INFO 2025-08-06 09:03:13,508 autoreload 26892 8732 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 09:03:14,716 autoreload 26704 25496 Watching for file changes with StatReloader
+INFO 2025-08-06 09:03:42,012 autoreload 26704 25496 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\serializers.py changed, reloading.
+INFO 2025-08-06 09:03:43,154 autoreload 21284 27536 Watching for file changes with StatReloader
+INFO 2025-08-06 09:03:52,259 autoreload 21284 27536 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\urls.py changed, reloading.
+INFO 2025-08-06 09:03:53,155 autoreload 16508 24220 Watching for file changes with StatReloader
+INFO 2025-08-06 09:08:33,382 autoreload 16508 24220 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 09:08:34,551 autoreload 28028 23496 Watching for file changes with StatReloader
+INFO 2025-08-06 10:53:12,602 autoreload 9268 23636 Watching for file changes with StatReloader
+ERROR 2025-08-06 10:56:16,394 handlers 26304 28536 There was an exception deleting the file `/placeholder.svg` on field `agri_connect.agriproductimage.image`
+Traceback (most recent call last):
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_cleanup\handlers.py", line 110, in run_on_commit
+    file_.delete(save=False)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 414, in delete
+    super().delete(save)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 118, in delete
+    self.storage.delete(self.name)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 183, in delete
+    name = self.path(name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 220, in path
+    return safe_join(self.location, name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+    ...<2 lines>...
+    )
+django.core.exceptions.SuspiciousFileOperation: The joined path (C:\placeholder.svg) is located outside of the base path component (C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\media)
+ERROR 2025-08-06 10:56:16,429 handlers 26304 28536 There was an exception deleting the file `/placeholder.svg` on field `agri_connect.agriproductimage.image`
+Traceback (most recent call last):
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_cleanup\handlers.py", line 110, in run_on_commit
+    file_.delete(save=False)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 414, in delete
+    super().delete(save)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 118, in delete
+    self.storage.delete(self.name)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 183, in delete
+    name = self.path(name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 220, in path
+    return safe_join(self.location, name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+    ...<2 lines>...
+    )
+django.core.exceptions.SuspiciousFileOperation: The joined path (C:\placeholder.svg) is located outside of the base path component (C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\media)
+ERROR 2025-08-06 10:56:16,430 handlers 26304 28536 There was an exception deleting the file `/placeholder.svg` on field `agri_connect.agriproductimage.image`
+Traceback (most recent call last):
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_cleanup\handlers.py", line 110, in run_on_commit
+    file_.delete(save=False)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 414, in delete
+    super().delete(save)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 118, in delete
+    self.storage.delete(self.name)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 183, in delete
+    name = self.path(name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 220, in path
+    return safe_join(self.location, name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+    ...<2 lines>...
+    )
+django.core.exceptions.SuspiciousFileOperation: The joined path (C:\placeholder.svg) is located outside of the base path component (C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\media)
+ERROR 2025-08-06 10:56:16,430 handlers 26304 28536 There was an exception deleting the file `/placeholder.svg` on field `agri_connect.agriproductimage.image`
+Traceback (most recent call last):
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_cleanup\handlers.py", line 110, in run_on_commit
+    file_.delete(save=False)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 414, in delete
+    super().delete(save)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 118, in delete
+    self.storage.delete(self.name)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 183, in delete
+    name = self.path(name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 220, in path
+    return safe_join(self.location, name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+    ...<2 lines>...
+    )
+django.core.exceptions.SuspiciousFileOperation: The joined path (C:\placeholder.svg) is located outside of the base path component (C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\media)
+ERROR 2025-08-06 10:56:16,431 handlers 26304 28536 There was an exception deleting the file `/placeholder.svg` on field `agri_connect.agriproductimage.image`
+Traceback (most recent call last):
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_cleanup\handlers.py", line 110, in run_on_commit
+    file_.delete(save=False)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 414, in delete
+    super().delete(save)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 118, in delete
+    self.storage.delete(self.name)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 183, in delete
+    name = self.path(name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 220, in path
+    return safe_join(self.location, name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+    ...<2 lines>...
+    )
+django.core.exceptions.SuspiciousFileOperation: The joined path (C:\placeholder.svg) is located outside of the base path component (C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\media)
+ERROR 2025-08-06 10:56:16,432 handlers 26304 28536 There was an exception deleting the file `/placeholder.svg` on field `agri_connect.agriproductimage.image`
+Traceback (most recent call last):
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_cleanup\handlers.py", line 110, in run_on_commit
+    file_.delete(save=False)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 414, in delete
+    super().delete(save)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 118, in delete
+    self.storage.delete(self.name)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 183, in delete
+    name = self.path(name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 220, in path
+    return safe_join(self.location, name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+    ...<2 lines>...
+    )
+django.core.exceptions.SuspiciousFileOperation: The joined path (C:\placeholder.svg) is located outside of the base path component (C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\media)
+ERROR 2025-08-06 10:56:16,432 handlers 26304 28536 There was an exception deleting the file `/placeholder.svg` on field `agri_connect.agriproductimage.image`
+Traceback (most recent call last):
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_cleanup\handlers.py", line 110, in run_on_commit
+    file_.delete(save=False)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 414, in delete
+    super().delete(save)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 118, in delete
+    self.storage.delete(self.name)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 183, in delete
+    name = self.path(name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 220, in path
+    return safe_join(self.location, name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+    ...<2 lines>...
+    )
+django.core.exceptions.SuspiciousFileOperation: The joined path (C:\placeholder.svg) is located outside of the base path component (C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\media)
+ERROR 2025-08-06 10:56:16,433 handlers 26304 28536 There was an exception deleting the file `/placeholder.svg` on field `agri_connect.agriproductimage.image`
+Traceback (most recent call last):
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_cleanup\handlers.py", line 110, in run_on_commit
+    file_.delete(save=False)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 414, in delete
+    super().delete(save)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\files.py", line 118, in delete
+    self.storage.delete(self.name)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 183, in delete
+    name = self.path(name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\files\storage\filesystem.py", line 220, in path
+    return safe_join(self.location, name)
+  File "C:\Users\kouek\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+    ...<2 lines>...
+    )
+django.core.exceptions.SuspiciousFileOperation: The joined path (C:\placeholder.svg) is located outside of the base path component (C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\media)
+WARNING 2025-08-06 11:17:07,375 log 9268 22692 Unauthorized: /api/users/profile/
+ERROR 2025-08-06 11:22:17,931 log 9268 17048 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+ERROR 2025-08-06 11:22:19,825 log 9268 22692 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+INFO 2025-08-06 11:22:21,603 autoreload 9268 23636 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 11:22:22,887 autoreload 3864 13052 Watching for file changes with StatReloader
+WARNING 2025-08-06 11:22:35,253 log 3864 27664 Method Not Allowed: /api/marketplace/cart/add/
+WARNING 2025-08-06 11:22:38,097 log 3864 27664 Method Not Allowed: /api/marketplace/cart/add/
+WARNING 2025-08-06 11:22:51,448 log 3864 27664 Method Not Allowed: /api/marketplace/cart/add/
+ERROR 2025-08-06 11:24:27,283 log 3864 27664 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+INFO 2025-08-06 11:24:35,155 autoreload 3864 13052 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 11:24:36,698 autoreload 21372 23448 Watching for file changes with StatReloader
+INFO 2025-08-06 11:26:23,400 autoreload 21372 23448 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 11:26:24,754 autoreload 23284 19652 Watching for file changes with StatReloader
+ERROR 2025-08-06 11:26:54,629 log 23284 10096 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+INFO 2025-08-06 11:27:38,773 autoreload 23284 19652 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\agri_connect\views.py changed, reloading.
+INFO 2025-08-06 11:27:39,783 autoreload 2088 20592 Watching for file changes with StatReloader
+INFO 2025-08-06 11:28:08,033 autoreload 2088 20592 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\agri_connect\views.py changed, reloading.
+INFO 2025-08-06 11:28:09,242 autoreload 17000 5064 Watching for file changes with StatReloader
+ERROR 2025-08-06 11:28:38,215 log 17000 1784 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+WARNING 2025-08-06 11:29:00,663 log 17000 1784 Method Not Allowed: /api/marketplace/cart/add/
+WARNING 2025-08-06 11:36:15,998 log 17000 1784 Not Found: /api/marketplace/cart/undefined/add_item/
+WARNING 2025-08-06 11:36:20,905 log 17000 1784 Not Found: /api/marketplace/cart/undefined/add_item/
+INFO 2025-08-06 11:38:57,280 autoreload 17000 5064 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 11:38:58,515 autoreload 11336 2736 Watching for file changes with StatReloader
+INFO 2025-08-06 11:39:26,117 autoreload 11336 2736 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 11:39:27,046 autoreload 25636 22080 Watching for file changes with StatReloader
+INFO 2025-08-06 11:40:19,848 autoreload 25636 22080 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 11:40:20,856 autoreload 9972 26368 Watching for file changes with StatReloader
+ERROR 2025-08-06 11:47:27,781 log 9972 25484 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+ERROR 2025-08-06 11:47:29,145 log 9972 25484 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+WARNING 2025-08-06 11:47:38,400 log 9972 2736 Bad Request: /api/marketplace/products/
+WARNING 2025-08-06 11:47:39,506 log 9972 2736 Bad Request: /api/marketplace/products/
+WARNING 2025-08-06 11:47:41,856 log 9972 2736 Bad Request: /api/marketplace/products/
+WARNING 2025-08-06 11:47:42,955 log 9972 2736 Bad Request: /api/marketplace/products/
+WARNING 2025-08-06 11:47:44,626 log 9972 2736 Bad Request: /api/marketplace/products/
+WARNING 2025-08-06 11:47:45,782 log 9972 2736 Bad Request: /api/marketplace/products/
+WARNING 2025-08-06 11:47:47,276 log 9972 2736 Bad Request: /api/marketplace/products/
+WARNING 2025-08-06 11:47:48,449 log 9972 2736 Bad Request: /api/marketplace/products/
+INFO 2025-08-06 11:48:30,337 autoreload 9972 26368 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 11:48:31,283 autoreload 25392 20996 Watching for file changes with StatReloader
+WARNING 2025-08-06 11:48:39,684 log 25392 21508 Bad Request: /api/marketplace/products/
+WARNING 2025-08-06 11:48:40,786 log 25392 21508 Bad Request: /api/marketplace/products/
+INFO 2025-08-06 11:49:00,721 autoreload 25392 20996 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 11:49:01,687 autoreload 7764 3116 Watching for file changes with StatReloader
+WARNING 2025-08-06 11:50:48,351 log 7764 21644 Not Found: /api/notifications/
+WARNING 2025-08-06 12:43:07,554 log 7764 28040 Unauthorized: /api/users/profile/
+WARNING 2025-08-06 12:43:08,555 log 7764 28040 Not Found: /api/notifications/
+WARNING 2025-08-06 12:43:09,720 log 7764 28040 Not Found: /api/notifications/
+WARNING 2025-08-06 12:43:12,248 log 7764 28040 Bad Request: /api/marketplace/products/
+INFO 2025-08-06 12:43:13,296 autoreload 7764 3116 C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\backend\marketplace\views.py changed, reloading.
+INFO 2025-08-06 12:43:18,924 autoreload 16212 19564 Watching for file changes with StatReloader
+WARNING 2025-08-06 12:46:04,404 log 16212 27212 Not Found: /api/notifications/
+WARNING 2025-08-06 12:46:05,424 log 16212 27212 Not Found: /api/notifications/
+ERROR 2025-08-06 12:46:16,408 log 16212 27212 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+ERROR 2025-08-06 12:46:17,548 log 16212 27212 Internal Server Error: /api/agri-connect/products/
+Traceback (most recent call last):
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 203, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 66, in filter_queryset
+    filterset = self.get_filterset(request, queryset, view)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 18, in get_filterset
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\rest_framework\backends.py", line 49, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+    ...<2 lines>...
+            fields = filterset_fields
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 82, in __new__
+    new_class.base_filters = new_class.get_filters()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kouek\kouekam\business\conect pin and go delivery\pin-and-go-delivery\venv\Lib\site-packages\django_filters\filterset.py", line 371, in get_filters
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: 'Meta.fields' must not contain non-model field names: is_on_sale
+WARNING 2025-08-06 15:28:40,500 log 16212 22444 Unauthorized: /api/marketplace/categories/
+WARNING 2025-08-06 15:28:40,500 log 16212 29476 Unauthorized: /api/marketplace/products/
+WARNING 2025-08-06 15:28:40,562 log 16212 22444 Not Found: /api/notifications/
