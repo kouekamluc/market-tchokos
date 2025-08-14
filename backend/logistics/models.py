@@ -45,6 +45,11 @@ class DeliveryTask(models.Model):
     delivery_contact = models.CharField(max_length=15)
     delivery_landmark = models.CharField(max_length=200, blank=True)
     
+    # Real-time tracking fields
+    last_known_point = gis_models.PointField(null=True, blank=True, help_text="Last known location of delivery agent")
+    bearing = models.FloatField(null=True, blank=True, help_text="Direction in degrees (0-360)")
+    speed_kmh = models.FloatField(null=True, blank=True, help_text="Current speed in km/h")
+    
     # Task number
     task_number = models.CharField(max_length=20, unique=True, blank=True)
     

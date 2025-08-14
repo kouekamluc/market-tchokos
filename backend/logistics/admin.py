@@ -8,18 +8,22 @@ from .models import (
 
 @admin.register(DeliveryTask)
 class DeliveryTaskAdmin(admin.ModelAdmin):
-    list_display = ('id', 'task_type', 'status', 'customer', 'merchant', 'delivery_agent', 'total_amount', 'created_at')
+    list_display = ('id', 'task_type', 'status', 'customer', 'farmer', 'delivery_agent', 'total_amount', 'created_at')
     list_filter = ('task_type', 'status', 'created_at')
-    search_fields = ('id', 'customer__username', 'merchant__username', 'delivery_agent__username')
+    search_fields = ('id', 'customer__username', 'farmer__username', 'delivery_agent__username')
     ordering = ('-created_at',)
     readonly_fields = ('total_amount', 'distance')
     
     fieldsets = (
         ('Task Information', {
-            'fields': ('task_type', 'status', 'customer', 'merchant', 'delivery_agent')
+            'fields': ('task_type', 'status', 'customer', 'farmer', 'delivery_agent')
         }),
         ('Location Information', {
             'fields': ('pickup_location', 'pickup_address', 'pickup_contact', 'pickup_landmark', 'delivery_location', 'delivery_address', 'delivery_contact', 'delivery_landmark')
+        }),
+        ('Real-time Tracking', {
+            'fields': ('last_known_point', 'bearing', 'speed_kmh'),
+            'classes': ('collapse',)
         }),
         ('Financial Information', {
             'fields': ('base_fare', 'distance_fare', 'time_fare', 'total_amount')
@@ -28,13 +32,13 @@ class DeliveryTaskAdmin(admin.ModelAdmin):
             'fields': ('assigned_at', 'started_at', 'completed_at')
         }),
         ('Additional Information', {
-            'fields': ('priority', 'notes'),
+            'fields': ('priority', 'agri_order'),
             'classes': ('collapse',)
         }),
     )
     
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related('customer', 'merchant', 'delivery_agent')
+        return super().get_queryset(request).select_related('customer', 'farmer', 'delivery_agent')
 
 
 @admin.register(DeliveryAgentLocation)

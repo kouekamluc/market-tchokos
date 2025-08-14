@@ -92,16 +92,16 @@ class AgriCartItemInline(admin.TabularInline):
 
 @admin.register(AgriCart)
 class AgriCartAdmin(admin.ModelAdmin):
-    list_display = ('user', 'total_items', 'created_at', 'updated_at')
+    list_display = ('customer', 'total_items', 'created_at', 'updated_at')
     list_filter = ('created_at', 'updated_at')
-    search_fields = ('user__username', 'user__phone_number')
+    search_fields = ('customer__username', 'customer__phone_number')
     ordering = ('-updated_at',)
     inlines = [AgriCartItemInline]
     readonly_fields = ('total_items',)
     
     fieldsets = (
         ('Cart Information', {
-            'fields': ('user', 'total_items')
+            'fields': ('customer', 'total_items')
         }),
     )
 

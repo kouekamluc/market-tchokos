@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'imagekit',
     'cacheops',
+    'channels',  # WebSocket support
     
     # Local apps
     'users',
@@ -49,6 +50,19 @@ INSTALLED_APPS = [
     'payments',
     'notifications',
 ]
+
+# Channels Configuration
+ASGI_APPLICATION = 'chronoconnect.asgi.application'
+
+# Channel Layers for WebSocket support
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [config('REDIS_URL', default='redis://127.0.0.1:6379/3')],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

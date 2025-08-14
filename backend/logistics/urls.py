@@ -17,7 +17,7 @@ urlpatterns = [
     path('agent/dashboard-stats/', views.agent_dashboard_stats, name='agent-dashboard-stats'),
     
     # Agent actions
-    path('agent/update-location/', views.update_agent_location, name='update-agent-location'),
+    path('agent/update-location/', views.update_delivery_location, name='update-delivery-location'),
     path('agent/accept-task/', views.accept_task, name='accept-task'),
     path('agent/tasks/<uuid:task_id>/update-status/', views.update_task_status, name='update-task-status'),
     path('agent/tasks/<uuid:task_id>/complete/', views.complete_task, name='complete-task'),

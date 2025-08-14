@@ -5,49 +5,70 @@ from .models import (
     DeliveryAgentEarnings, DeliveryAgentRating, DeliverySchedule
 )
 from payments.models import Payment
+from users.serializers import UserSerializer
+from agri_connect.serializers import AgriOrderSerializer
+
+
+class LocationUpdateSerializer(serializers.Serializer):
+    """Serializer for real-time location updates from delivery agents"""
+    lat = serializers.FloatField(help_text="Latitude coordinate")
+    lon = serializers.FloatField(help_text="Longitude coordinate")
+    bearing = serializers.FloatField(required=False, help_text="Direction in degrees (0-360)")
+    speed = serializers.FloatField(required=False, help_text="Speed in km/h")
+    accuracy = serializers.FloatField(required=False, help_text="GPS accuracy in meters")
+    battery_level = serializers.IntegerField(required=False, min_value=0, max_value=100, help_text="Battery percentage")
+    
+    def validate_lat(self, value):
+        if not -90 <= value <= 90:
+            raise serializers.ValidationError("Latitude must be between -90 and 90 degrees")
+        return value
+    
+    def validate_lon(self, value):
+        if not -180 <= value <= 180:
+            raise serializers.ValidationError("Longitude must be between -180 and 180 degrees")
+        return value
+    
+    def validate_bearing(self, value):
+        if value is not None and not 0 <= value <= 360:
+            raise serializers.ValidationError("Bearing must be between 0 and 360 degrees")
+        return value
+    
+    def validate_speed(self, value):
+        if value is not None and value < 0:
+            raise serializers.ValidationError("Speed cannot be negative")
+        return value
 
 
 class DeliveryTaskSerializer(serializers.ModelSerializer):
-    """Serializer for DeliveryTask model"""
-    customer_name = serializers.CharField(source='customer.get_full_name', read_only=True)
-    merchant_name = serializers.CharField(source='merchant.business_name', read_only=True)
-    delivery_agent_name = serializers.CharField(source='delivery_agent.get_full_name', read_only=True)
-    pickup_address = serializers.CharField(source='pickup_location', read_only=True)
-    delivery_address = serializers.CharField(source='delivery_location', read_only=True)
+    """Serializer for delivery tasks"""
+    customer = UserSerializer(read_only=True)
+    farmer = UserSerializer(read_only=True)
+    delivery_agent = UserSerializer(read_only=True)
+    agri_order = AgriOrderSerializer(read_only=True)
     
     class Meta:
         model = DeliveryTask
-        fields = [
-            'id', 'task_type', 'status', 'customer', 'customer_name',
-            'merchant', 'merchant_name', 'delivery_agent', 'delivery_agent_name',
-            'pickup_location', 'pickup_address', 'delivery_location', 'delivery_address',
-            'pickup_contact', 'delivery_contact', 'pickup_landmark', 'delivery_landmark',
-            'total_amount', 'base_fare', 'distance_fare', 'time_fare', 'distance',
-            'assigned_at', 'started_at', 'completed_at', 'created_at'
-        ]
-        read_only_fields = ['id', 'created_at', 'assigned_at', 'started_at', 'completed_at']
+        fields = '__all__'
+        read_only_fields = ['id', 'task_number', 'created_at', 'assigned_at', 'started_at', 'completed_at']
 
 
 class DeliveryTaskDetailSerializer(DeliveryTaskSerializer):
     """Detailed serializer for DeliveryTask with full information"""
     
     class Meta(DeliveryTaskSerializer.Meta):
-        fields = DeliveryTaskSerializer.Meta.fields + [
+        fields = list(DeliveryTaskSerializer.Meta.fields) + [
             'routes', 'priority'
         ]
 
 
 class DeliveryAgentLocationSerializer(serializers.ModelSerializer):
-    """Serializer for DeliveryAgentLocation model"""
-    agent_name = serializers.CharField(source='delivery_agent.get_full_name', read_only=True)
+    """Serializer for delivery agent locations"""
+    delivery_agent = UserSerializer(read_only=True)
     
     class Meta:
         model = DeliveryAgentLocation
-        fields = [
-            'id', 'delivery_agent', 'agent_name', 'location', 'accuracy', 'speed', 'battery_level',
-            'timestamp', 'created_at'
-        ]
-        read_only_fields = ['id', 'created_at']
+        fields = '__all__'
+        read_only_fields = ['id', 'timestamp']
     
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -69,69 +90,54 @@ class DeliveryAgentLocationSerializer(serializers.ModelSerializer):
 
 
 class DeliveryRouteSerializer(serializers.ModelSerializer):
-    """Serializer for DeliveryRoute model"""
+    """Serializer for delivery routes"""
+    delivery_task = DeliveryTaskSerializer(read_only=True)
     
     class Meta:
         model = DeliveryRoute
-        fields = [
-            'id', 'delivery_task', 'route_data', 'distance', 'duration',
-            'created_at'
-        ]
+        fields = '__all__'
         read_only_fields = ['id', 'created_at']
 
 
 class DeliveryZoneSerializer(serializers.ModelSerializer):
-    """Serializer for DeliveryZone model"""
-    
+    """Serializer for delivery zones"""
     class Meta:
         model = DeliveryZone
-        fields = [
-            'id', 'name', 'description', 'boundary', 'center',
-            'is_active', 'created_at'
-        ]
+        fields = '__all__'
         read_only_fields = ['id', 'created_at']
 
 
 class DeliveryAgentEarningsSerializer(serializers.ModelSerializer):
-    """Serializer for DeliveryAgentEarnings model"""
-    agent_name = serializers.CharField(source='delivery_agent.get_full_name', read_only=True)
+    """Serializer for delivery agent earnings"""
+    delivery_agent = UserSerializer(read_only=True)
+    delivery_task = DeliveryTaskSerializer(read_only=True)
     
     class Meta:
         model = DeliveryAgentEarnings
-        fields = [
-            'id', 'delivery_agent', 'agent_name', 'delivery_task', 'base_rate',
-            'commission_amount', 'total_earnings', 'is_paid',
-            'paid_at', 'created_at'
-        ]
+        fields = '__all__'
         read_only_fields = ['id', 'created_at']
 
 
 class DeliveryAgentRatingSerializer(serializers.ModelSerializer):
-    """Serializer for DeliveryAgentRating model"""
-    agent_name = serializers.CharField(source='delivery_agent.get_full_name', read_only=True)
-    customer_name = serializers.CharField(source='customer.get_full_name', read_only=True)
+    """Serializer for delivery agent ratings"""
+    delivery_agent = UserSerializer(read_only=True)
+    customer = UserSerializer(read_only=True)
+    delivery_task = DeliveryTaskSerializer(read_only=True)
     
     class Meta:
         model = DeliveryAgentRating
-        fields = [
-            'id', 'delivery_agent', 'agent_name', 'customer', 'customer_name',
-            'delivery_task', 'rating', 'comment', 'created_at'
-        ]
-        read_only_fields = ['id', 'customer', 'created_at']
+        fields = '__all__'
+        read_only_fields = ['id', 'created_at']
 
 
 class DeliveryScheduleSerializer(serializers.ModelSerializer):
-    """Serializer for DeliverySchedule model"""
-    agent_name = serializers.CharField(source='delivery_agent.get_full_name', read_only=True)
+    """Serializer for delivery schedules"""
+    delivery_agent = UserSerializer(read_only=True)
     
     class Meta:
         model = DeliverySchedule
-        fields = [
-            'id', 'delivery_agent', 'agent_name', 'date', 'start_time',
-            'end_time', 'is_available', 'max_deliveries', 'current_deliveries',
-            'created_at'
-        ]
-        read_only_fields = ['id', 'created_at']
+        fields = '__all__'
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
 
 class UpdateLocationSerializer(serializers.Serializer):

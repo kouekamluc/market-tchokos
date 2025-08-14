@@ -1,7 +1,8 @@
 from rest_framework import status, generics, permissions, filters
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.throttling import UserRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
@@ -19,8 +20,73 @@ from .serializers import (
     DeliveryZoneSerializer, DeliveryAgentEarningsSerializer,
     DeliveryAgentRatingSerializer, DeliveryScheduleSerializer,
     UpdateLocationSerializer, AcceptTaskSerializer,
-    UpdateTaskStatusSerializer, CompleteTaskSerializer
+    UpdateTaskStatusSerializer, CompleteTaskSerializer, LocationUpdateSerializer
 )
+
+
+class DeliveryAgentRateThrottle(UserRateThrottle):
+    """Rate limit for delivery agent location updates: 1 request per 3 seconds"""
+    rate = '1/3s'
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+@throttle_classes([DeliveryAgentRateThrottle])
+def update_delivery_location(request):
+    """Update delivery agent's real-time location for active tasks"""
+    try:
+        # Validate user is delivery agent
+        if request.user.user_type != 'delivery_agent':
+            return Response(
+                {'error': 'Only delivery agents can update location'}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Validate serializer
+        serializer = LocationUpdateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        data = serializer.validated_data
+        
+        # Create Point object
+        location_point = Point(data['lon'], data['lat'])
+        
+        # Update user's current location
+        request.user.current_location = location_point
+        request.user.save()
+        
+        # Create location history record
+        DeliveryAgentLocation.objects.create(
+            delivery_agent=request.user,
+            location=location_point,
+            accuracy=data.get('accuracy'),
+            speed=data.get('speed'),
+            battery_level=data.get('battery_level')
+        )
+        
+        # Update active delivery tasks with real-time tracking data
+        active_tasks = DeliveryTask.objects.filter(
+            delivery_agent=request.user,
+            status__in=['assigned', 'in_progress']
+        )
+        
+        for task in active_tasks:
+            task.last_known_point = location_point
+            task.bearing = data.get('bearing')
+            task.speed_kmh = data.get('speed')
+            task.save()
+        
+        return Response({
+            'message': 'Location updated successfully',
+            'active_tasks_updated': active_tasks.count()
+        })
+        
+    except Exception as e:
+        return Response(
+            {'error': f'Location update failed: {str(e)}'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 class DeliveryTaskListView(generics.ListAPIView):
@@ -134,43 +200,6 @@ class CompletedTasksListView(generics.ListAPIView):
             delivery_agent=self.request.user,
             status='completed'
         ).select_related('customer', 'merchant')
-
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def update_agent_location(request):
-    """Update delivery agent's current location"""
-    try:
-        lat = request.data.get('latitude')
-        lng = request.data.get('longitude')
-        accuracy = request.data.get('accuracy')
-        speed = request.data.get('speed')
-        battery_level = request.data.get('battery_level')
-        
-        if not lat or not lng:
-            return Response({'error': 'Latitude and longitude are required'}, 
-                          status=status.HTTP_400_BAD_REQUEST)
-        
-        if request.user.user_type != 'delivery_agent':
-            return Response({'error': 'Only delivery agents can update location'}, 
-                          status=status.HTTP_403_FORBIDDEN)
-        
-        # Update user's current location
-        request.user.current_location = Point(float(lng), float(lat))
-        request.user.save()
-        
-        # Create location history record
-        DeliveryAgentLocation.objects.create(
-            delivery_agent=request.user,
-            location=Point(float(lng), float(lat)),
-            accuracy=accuracy,
-            speed=speed,
-            battery_level=battery_level
-        )
-        
-        return Response({'message': 'Location updated successfully'})
-    except ValueError:
-        return Response({'error': 'Invalid coordinates'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
