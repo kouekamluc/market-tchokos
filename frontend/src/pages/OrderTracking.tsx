@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,11 +15,42 @@ import {
 } from 'lucide-react';
 import { useOrder } from '@/hooks/useApi';
 import { toast } from 'sonner';
+import { useDeliveryTracking } from '@/contexts/DeliveryTrackingContext';
+import TrackingMap from '@/components/TrackingMap';
 
 const OrderTracking = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const { data: order, isLoading, error } = useOrder(parseInt(orderId || '0'));
+  const { 
+    isConnected, 
+    orderStatus, 
+    locationUpdates, 
+    etaUpdates, 
+    connect, 
+    disconnect 
+  } = useDeliveryTracking();
+  
+  const [showTrackingMap, setShowTrackingMap] = useState(false);
+
+  // Auto-connect to WebSocket when order is in transit
+  useEffect(() => {
+    if (order && order.status === 'out_for_delivery' && orderId) {
+      connect(orderId);
+      setShowTrackingMap(true);
+    } else {
+      disconnect();
+      setShowTrackingMap(false);
+    }
+
+    return () => {
+      disconnect();
+    };
+  }, [order, orderId, connect, disconnect]);
+
+  // Get latest ETA and location data
+  const latestETA = etaUpdates.length > 0 ? etaUpdates[etaUpdates.length - 1] : null;
+  const latestLocation = locationUpdates.length > 0 ? locationUpdates[locationUpdates.length - 1] : null;
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -149,6 +180,64 @@ const OrderTracking = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Live Tracking Map - Auto-opens when status is "out_for_delivery" */}
+            {showTrackingMap && order.delivery_address && (
+              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Truck className="w-5 h-5 text-blue-500" />
+                    Live Delivery Tracking
+                    {isConnected && (
+                      <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
+                        LIVE
+                      </Badge>
+                    )}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TrackingMap
+                    orderId={orderId || ''}
+                    pickupLocation={{
+                      lat: order.delivery_address.latitude,
+                      lon: order.delivery_address.longitude
+                    }}
+                    deliveryLocation={{
+                      lat: order.delivery_address.latitude,
+                      lon: order.delivery_address.longitude
+                    }}
+                    currentLocation={latestLocation ? {
+                      lat: latestLocation.lat,
+                      lon: latestLocation.lon
+                    } : undefined}
+                    bearing={latestLocation?.bearing}
+                    speed={latestLocation?.speed}
+                    eta={latestETA?.eta_minutes}
+                    distance={latestETA?.distance_km}
+                    isTracking={isConnected}
+                    className="w-full"
+                  />
+                  
+                  {/* Real-time Status Updates */}
+                  {orderStatus && (
+                    <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                      <h4 className="text-blue-400 font-medium mb-2">Delivery Agent</h4>
+                      <p className="text-white text-sm">
+                        {orderStatus.delivery_agent || 'Agent assigned'}
+                      </p>
+                      {latestETA && (
+                        <div className="mt-2 text-sm">
+                          <span className="text-gray-400">ETA: </span>
+                          <span className="text-white font-medium">
+                            {Math.round(latestETA.eta_minutes)} minutes
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
 
             {/* Order Items */}
             <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">

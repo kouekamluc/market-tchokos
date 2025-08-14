@@ -8,6 +8,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import { LocationProvider } from './contexts/LocationContext'
 import { OrderProvider } from './contexts/OrderContext'
 import { CartProvider } from './contexts/CartContext'
+import { DeliveryTrackingProvider } from './contexts/DeliveryTrackingContext'
 import { 
   ProtectedRoute, 
   CustomerRoute, 
@@ -59,93 +60,95 @@ function App() {
           <LocationProvider>
             <OrderProvider>
               <CartProvider>
-                <Router>
-                <div className="min-h-screen bg-background">
-                  <Header />
-                  <main>
-                    <Routes>
-                      {/* Public Routes */}
-                      <Route path="/" element={<Index />} />
-                      <Route path="/about" element={<About />} />
-                      <Route path="/contact" element={<Contact />} />
-                      <Route path="/help" element={<Help />} />
-                      <Route path="/terms" element={<Terms />} />
-                      <Route path="/careers" element={<Careers />} />
-                      <Route path="/login" element={<LoginForm />} />
-                      <Route path="/register" element={<RegisterForm />} />
-                      
-                      {/* Protected Routes - Require Authentication */}
-                      <Route path="/agri-connect" element={
-                        <AuthenticatedRoute>
-                          <AgriConnect />
-                        </AuthenticatedRoute>
-                      } />
+                <DeliveryTrackingProvider>
+                  <Router>
+                  <div className="min-h-screen bg-background">
+                    <Header />
+                    <main>
+                      <Routes>
+                        {/* Public Routes */}
+                        <Route path="/" element={<Index />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/help" element={<Help />} />
+                        <Route path="/terms" element={<Terms />} />
+                        <Route path="/careers" element={<Careers />} />
+                        <Route path="/login" element={<LoginForm />} />
+                        <Route path="/register" element={<RegisterForm />} />
+                        
+                        {/* Protected Routes - Require Authentication */}
+                        <Route path="/agri-connect" element={
+                          <AuthenticatedRoute>
+                            <AgriConnect />
+                          </AuthenticatedRoute>
+                        } />
 
-                      <Route path="/product/:id" element={
-                        <AuthenticatedRoute>
-                          <ProductDetail />
-                        </AuthenticatedRoute>
-                      } />
-                      <Route path="/cart" element={
-                        <AuthenticatedRoute>
-                          <Cart />
-                        </AuthenticatedRoute>
-                      } />
-                      <Route path="/checkout" element={
-                        <CustomerRoute>
-                          <Checkout />
-                        </CustomerRoute>
-                      } />
-                      <Route path="/order/:orderId" element={
-                        <AuthenticatedRoute>
-                          <OrderTracking />
-                        </AuthenticatedRoute>
-                      } />
-                      
-                      {/* User Dashboard and Orders */}
-                      <Route path="/dashboard" element={
-                        <AuthenticatedRoute>
-                          <UserDashboard />
-                        </AuthenticatedRoute>
-                      } />
-                      <Route path="/orders" element={
-                        <AuthenticatedRoute>
-                          <Orders />
-                        </AuthenticatedRoute>
-                      } />
-                      <Route path="/orders/:orderId" element={
-                        <AuthenticatedRoute>
-                          <Orders />
-                        </AuthenticatedRoute>
-                      } />
-                      
-                      {/* Role-Specific Routes */}
-                      <Route path="/merchant" element={
-                        <MerchantRoute>
-                          <MerchantDashboard />
-                        </MerchantRoute>
-                      } />
-                      <Route path="/farmer" element={
-                        <FarmerRoute>
-                          <FarmerDashboard />
-                        </FarmerRoute>
-                      } />
-                      <Route path="/delivery-agent" element={
-                        <DeliveryAgentRoute>
-                          <DeliveryAgent />
-                        </DeliveryAgentRoute>
-                      } />
-                      
-                      {/* Test Route */}
-                      <Route path="/test-integration" element={<TestIntegration />} />
-                      
-                      {/* 404 Route */}
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </main>
-                  <Toaster />
-                </div>
-              </Router>
+                        <Route path="/product/:id" element={
+                          <AuthenticatedRoute>
+                            <ProductDetail />
+                          </AuthenticatedRoute>
+                        } />
+                        <Route path="/cart" element={
+                          <AuthenticatedRoute>
+                            <Cart />
+                          </AuthenticatedRoute>
+                        } />
+                        <Route path="/checkout" element={
+                          <CustomerRoute>
+                            <Checkout />
+                          </CustomerRoute>
+                        } />
+                        <Route path="/order/:orderId" element={
+                          <AuthenticatedRoute>
+                            <OrderTracking />
+                          </AuthenticatedRoute>
+                        } />
+                        
+                        {/* User Dashboard and Orders */}
+                        <Route path="/dashboard" element={
+                          <AuthenticatedRoute>
+                            <UserDashboard />
+                          </AuthenticatedRoute>
+                        } />
+                        <Route path="/orders" element={
+                          <AuthenticatedRoute>
+                            <Orders />
+                          </AuthenticatedRoute>
+                        } />
+                        <Route path="/orders/:orderId" element={
+                          <AuthenticatedRoute>
+                            <Orders />
+                          </AuthenticatedRoute>
+                        } />
+                        
+                        {/* Role-Specific Routes */}
+                        <Route path="/merchant" element={
+                          <MerchantRoute>
+                            <MerchantDashboard />
+                          </MerchantRoute>
+                        } />
+                        <Route path="/farmer" element={
+                          <FarmerRoute>
+                            <FarmerDashboard />
+                          </FarmerRoute>
+                        } />
+                        <Route path="/delivery-agent" element={
+                          <DeliveryAgentRoute>
+                            <DeliveryAgent />
+                          </DeliveryAgentRoute>
+                        } />
+                        
+                        {/* Test Route */}
+                        <Route path="/test-integration" element={<TestIntegration />} />
+                        
+                        {/* 404 Route */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </main>
+                    <Toaster />
+                  </div>
+                </Router>
+                </DeliveryTrackingProvider>
               </CartProvider>
             </OrderProvider>
           </LocationProvider>
