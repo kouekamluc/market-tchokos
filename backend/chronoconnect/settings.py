@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     
     # Local apps
     'users',
-    'marketplace',
     'agri_connect',
     'logistics',
     'payments',

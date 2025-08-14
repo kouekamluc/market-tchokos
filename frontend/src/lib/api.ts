@@ -40,69 +40,19 @@ export interface User {
 }
 
 export interface UserAddress {
-  id: number;
-  user: number;
+  id: string;
+  name: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
   landmark: string;
-  latitude: number;
-  longitude: number;
   contact_number: string;
   is_default: boolean;
   created_at: string;
 }
 
-// Marketplace Types
-export interface Category {
-  id: number;
-  name: string;
-  description: string;
-  image?: string;
-  parent?: number;
-  children?: Category[];
-}
 
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  sale_price?: number;
-  category: Category;
-  merchant: User;
-  images: ProductImage[];
-  variants: ProductVariant[];
-  average_rating: number;
-  review_count: number;
-  stock_quantity: number;
-  is_available: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface ProductImage {
-  id: number;
-  product: number;
-  image: string;
-  is_primary: boolean;
-  alt_text: string;
-}
-
-export interface ProductVariant {
-  id: number;
-  product: number;
-  name: string;
-  value: string;
-  price_adjustment: number;
-  stock_quantity: number;
-}
-
-export interface ProductReview {
-  id: number;
-  product: number;
-  user: User;
-  rating: number;
-  comment: string;
-  created_at: string;
-}
 
 // AgriConnect Types
 export interface AgriCategory {
@@ -143,6 +93,34 @@ export interface AgriProductImage {
   alt_text: string;
 }
 
+export interface AgriProductReview {
+  id: string;
+  product: string;
+  user: number;
+  user_name: string;
+  user_avatar?: string;
+  rating: number;
+  title: string;
+  comment: string;
+  is_verified_purchase: boolean;
+  is_approved: boolean;
+  created_at: string;
+}
+
+export interface ProductReview {
+  id: string;
+  product: string;
+  user: number;
+  user_name: string;
+  user_avatar?: string;
+  rating: number;
+  title: string;
+  comment: string;
+  is_verified_purchase: boolean;
+  is_approved: boolean;
+  created_at: string;
+}
+
 export interface Farm {
   id: number;
   farmer: User;
@@ -160,8 +138,7 @@ export interface Farm {
 export interface CartItem {
   id: number;
   cart: number;
-  product?: Product;
-  agri_product?: AgriProduct;
+  agri_product: AgriProduct;
   quantity: number;
   price: number;
   created_at: string;
@@ -180,8 +157,7 @@ export interface Cart {
 export interface OrderItem {
   id: number;
   order: number;
-  product?: Product;
-  agri_product?: AgriProduct;
+  agri_product: AgriProduct;
   quantity: number;
   price: number;
   total_price: number;
@@ -190,8 +166,7 @@ export interface OrderItem {
 export interface Order {
   id: number;
   user: User;
-  merchant?: User;
-  farmer?: User;
+  farmer: User;
   items: OrderItem[];
   total_amount: number;
   delivery_fee: number;
@@ -431,39 +406,7 @@ class ApiClient {
     return this.request<User>('/users/profile/');
   }
 
-  // Marketplace API
-  async getCategories(): Promise<Category[]> {
-    return this.request<Category[]>('/marketplace/categories/');
-  }
 
-  async getProducts(params?: {
-    search?: string;
-    category?: number;
-    min_price?: number;
-    max_price?: number;
-    in_stock?: boolean;
-    page?: number;
-    page_size?: number;
-  }): Promise<PaginatedResponse<Product>> {
-    const searchParams = new URLSearchParams();
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined) {
-          searchParams.append(key, value.toString());
-        }
-      });
-    }
-    
-    return this.request<PaginatedResponse<Product>>(`/marketplace/products/?${searchParams.toString()}`);
-  }
-
-  async getProduct(id: number): Promise<Product> {
-    return this.request<Product>(`/marketplace/products/${id}/`);
-  }
-
-  async getProductReviews(productId: number): Promise<ProductReview[]> {
-    return this.request<ProductReview[]>(`/marketplace/products/${productId}/reviews/`);
-  }
 
   // AgriConnect API
   async getAgriCategories(): Promise<AgriCategory[]> {
@@ -504,11 +447,11 @@ class ApiClient {
   // Cart API
   async getCart(): Promise<Cart> {
     try {
-      return this.request<Cart>('/marketplace/cart/');
+      return this.request<Cart>('/agri-connect/cart/');
     } catch (error) {
       // If cart doesn't exist, create one by making a POST request
       if (error instanceof Error && error.message.includes('404')) {
-        return this.request<Cart>('/marketplace/cart/', {
+        return this.request<Cart>('/agri-connect/cart/', {
           method: 'POST',
           body: JSON.stringify({}),
         });
@@ -518,9 +461,7 @@ class ApiClient {
   }
 
   async addToCart(data: {
-    product_id?: number;
-    agri_product_id?: number;
-    variant_id?: number;
+    agri_product_id: number;
     quantity: number;
   }): Promise<Cart> {
     try {
@@ -532,7 +473,7 @@ class ApiClient {
         throw new Error('Cart not found or invalid');
       }
       
-      return this.request<Cart>(`/marketplace/cart/${cart.id}/add_item/`, {
+      return this.request<Cart>(`/agri-connect/cart/${cart.id}/add_item/`, {
         method: 'POST',
         body: JSON.stringify(data),
       });
@@ -552,7 +493,7 @@ class ApiClient {
         throw new Error('Cart not found or invalid');
       }
       
-      return this.request<Cart>(`/marketplace/cart/${cart.id}/update_item/`, {
+      return this.request<Cart>(`/agri-connect/cart/${cart.id}/update_item/`, {
         method: 'POST',
         body: JSON.stringify({ item_id: itemId, quantity }),
       });
@@ -572,7 +513,7 @@ class ApiClient {
         throw new Error('Cart not found or invalid');
       }
       
-      return this.request<Cart>(`/marketplace/cart/${cart.id}/remove_item/`, {
+      return this.request<Cart>(`/agri-connect/cart/${cart.id}/remove_item/`, {
         method: 'POST',
         body: JSON.stringify({ item_id: itemId }),
       });
@@ -592,7 +533,7 @@ class ApiClient {
         throw new Error('Cart not found or invalid');
       }
       
-      return this.request<Cart>(`/marketplace/cart/${cart.id}/clear/`, {
+      return this.request<Cart>(`/agri-connect/cart/${cart.id}/clear/`, {
         method: 'POST',
       });
     } catch (error) {
@@ -608,7 +549,7 @@ class ApiClient {
     mobile_money_provider?: 'mtn' | 'orange' | 'moov';
     mobile_money_phone?: string;
   }): Promise<Order> {
-    return this.request<Order>('/marketplace/orders/', {
+    return this.request<Order>('/agri-connect/orders/', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -628,15 +569,15 @@ class ApiClient {
       });
     }
     
-    return this.request<PaginatedResponse<Order>>(`/marketplace/orders/?${searchParams.toString()}`);
+    return this.request<PaginatedResponse<Order>>(`/agri-connect/orders/?${searchParams.toString()}`);
   }
 
   async getOrder(id: number): Promise<Order> {
-    return this.request<Order>(`/marketplace/orders/${id}/`);
+    return this.request<Order>(`/agri-connect/orders/${id}/`);
   }
 
   async cancelOrder(id: number): Promise<Order> {
-    return this.request<Order>(`/marketplace/orders/${id}/cancel/`, {
+    return this.request<Order>(`/agri-connect/orders/${id}/cancel/`, {
       method: 'POST',
     });
   }
@@ -703,11 +644,9 @@ class ApiClient {
 
   // Merchant/Farmer API
   async getMyProducts(params?: {
-    marketplace?: boolean;
-    agri_connect?: boolean;
     page?: number;
     page_size?: number;
-  }): Promise<PaginatedResponse<Product | AgriProduct>> {
+  }): Promise<PaginatedResponse<AgriProduct>> {
     const searchParams = new URLSearchParams();
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -717,7 +656,7 @@ class ApiClient {
       });
     }
     
-    return this.request<PaginatedResponse<Product | AgriProduct>>(`/marketplace/merchant/products/?${searchParams.toString()}`);
+    return this.request<PaginatedResponse<AgriProduct>>(`/agri-connect/farmer/products/?${searchParams.toString()}`);
   }
 
   async createProduct(data: {
@@ -727,7 +666,7 @@ class ApiClient {
     category_id: number;
     stock_quantity: number;
     images?: File[];
-  }): Promise<Product> {
+  }): Promise<AgriProduct> {
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
       if (key === 'images' && Array.isArray(value)) {
@@ -739,7 +678,7 @@ class ApiClient {
       }
     });
 
-    return this.request<Product>('/marketplace/merchant/products/', {
+    return this.request<AgriProduct>('/agri-connect/farmer/products/', {
       method: 'POST',
       body: formData,
       headers: {}, // Let browser set Content-Type for FormData
@@ -760,18 +699,18 @@ class ApiClient {
       });
     }
     
-    return this.request<PaginatedResponse<Order>>(`/marketplace/merchant/orders/?${searchParams.toString()}`);
+    return this.request<PaginatedResponse<Order>>(`/agri-connect/farmer/orders/?${searchParams.toString()}`);
   }
 
   async updateOrderStatus(orderId: number, status: Order['status']): Promise<Order> {
-    return this.request<Order>(`/marketplace/merchant/orders/${orderId}/status/`, {
+    return this.request<Order>(`/agri-connect/farmer/orders/${orderId}/status/`, {
       method: 'PATCH',
       body: JSON.stringify({ status }),
     });
   }
 
   async requestDelivery(orderId: number): Promise<DeliveryTask> {
-    return this.request<DeliveryTask>(`/marketplace/merchant/orders/${orderId}/request-delivery/`, {
+    return this.request<DeliveryTask>(`/agri-connect/farmer/orders/${orderId}/request-delivery/`, {
       method: 'POST',
     });
   }
@@ -935,14 +874,11 @@ export { api };
 export type {
   User,
   UserAddress,
-  Category,
-  Product,
-  ProductImage,
-  ProductVariant,
   ProductReview,
   AgriCategory,
   AgriProduct,
   AgriProductImage,
+  AgriProductReview,
   Farm,
   Cart,
   CartItem,

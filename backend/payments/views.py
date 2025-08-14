@@ -1,513 +1,590 @@
-from rest_framework import status, generics, permissions, filters
+import logging
+import json
+import hashlib
+import hmac
+from datetime import datetime, timedelta
+from django.db import transaction
+from django.utils import timezone
+from django.conf import settings
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from rest_framework import status, generics, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Q, Sum, Count
-from django.shortcuts import get_object_or_404
-from django.utils import timezone
-import uuid
-import json
+from rest_framework.filters import SearchFilter, OrderingFilter
+
 from .models import (
-    Payment, MobileMoneyTransaction, PaymentMethod, PaymentSettlement, PaymentRefund
+    Payment, MobileMoneyTransaction, PaymentWebhook, 
+    CashOnDeliveryPayment, PaymentRefund
 )
 from .serializers import (
-    PaymentSerializer, PaymentDetailSerializer, MobileMoneyTransactionSerializer,
-    PaymentMethodSerializer, PaymentSettlementSerializer, PaymentRefundSerializer,
-    ProcessPaymentSerializer, MobileMoneyPaymentSerializer, CashOnDeliveryPaymentSerializer,
-    PaymentStatusSerializer, CreateRefundSerializer, SettlementRequestSerializer,
-    MobileMoneyCallbackSerializer
+    PaymentSerializer, PaymentDetailSerializer, CreatePaymentSerializer,
+    MobileMoneyTransactionSerializer, InitiateMobileMoneyPaymentSerializer,
+    MobileMoneyCallbackSerializer, PaymentWebhookSerializer,
+    CashOnDeliveryPaymentSerializer, CreateCashOnDeliveryPaymentSerializer,
+    UpdateCashOnDeliveryPaymentSerializer, PaymentRefundSerializer,
+    CreateRefundSerializer, UpdateRefundStatusSerializer,
+    PaymentStatusUpdateSerializer, PaymentVerificationSerializer,
+    PaymentSummarySerializer
 )
+from users.models import User
 
+from agri_connect.models import AgriOrder
 
-class PaymentListView(generics.ListAPIView):
-    """List payments with filtering"""
+logger = logging.getLogger(__name__)
+
+class PaymentListView(generics.ListCreateAPIView):
+    """List and create payments"""
     serializer_class = PaymentSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['status', 'payment_method', 'currency']
-    ordering_fields = ['created_at', 'payment_date', 'amount']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['payment_method', 'payment_status', 'mobile_money_provider']
+    search_fields = ['reference_number', 'transaction_id']
+    ordering_fields = ['amount', 'created_at', 'completed_at']
     ordering = ['-created_at']
     
     def get_queryset(self):
+        """Filter payments by user role"""
         user = self.request.user
-        if user.user_type == 'customer':
-            return Payment.objects.filter(customer=user).select_related('merchant')
-        elif user.user_type in ['merchant', 'farmer']:
-            return Payment.objects.filter(merchant=user).select_related('customer')
-        else:
-            return Payment.objects.all().select_related('customer', 'merchant')
+        if user.user_type in ['admin', 'staff']:
+            return Payment.objects.all()
+        return Payment.objects.filter(user=user)
+    
+    def perform_create(self, serializer):
+        """Create payment with user"""
+        serializer.save(user=self.request.user)
 
-
-class PaymentDetailView(generics.RetrieveAPIView):
-    """Get detailed payment information"""
+class PaymentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Retrieve, update, and delete payment"""
     serializer_class = PaymentDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
+        """Filter payments by user role"""
         user = self.request.user
-        if user.user_type == 'customer':
-            return Payment.objects.filter(customer=user).select_related('merchant')
-        elif user.user_type in ['merchant', 'farmer']:
-            return Payment.objects.filter(merchant=user).select_related('customer')
-        else:
-            return Payment.objects.all().select_related('customer', 'merchant')
-
-
-class PaymentMethodListView(generics.ListAPIView):
-    """List available payment methods"""
-    queryset = PaymentMethod.objects.filter(is_active=True)
-    serializer_class = PaymentMethodSerializer
-    permission_classes = [permissions.AllowAny]
-
+        if user.user_type in ['admin', 'staff']:
+            return Payment.objects.all()
+        return Payment.objects.filter(user=user)
 
 class MobileMoneyTransactionListView(generics.ListAPIView):
     """List mobile money transactions"""
     serializer_class = MobileMoneyTransactionSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['provider', 'status', 'currency']
-    ordering_fields = ['created_at', 'amount']
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['provider', 'status']
+    ordering_fields = ['amount', 'created_at']
     ordering = ['-created_at']
     
     def get_queryset(self):
+        """Filter transactions by user role"""
         user = self.request.user
-        if user.user_type == 'customer':
-            return MobileMoneyTransaction.objects.filter(
-                payment__customer=user
-            ).select_related('payment')
-        else:
-            return MobileMoneyTransaction.objects.all().select_related('payment')
+        if user.user_type in ['admin', 'staff']:
+            return MobileMoneyTransaction.objects.all()
+        return MobileMoneyTransaction.objects.filter(payment__user=user)
 
-
-class PaymentSettlementListView(generics.ListAPIView):
-    """List payment settlements"""
-    serializer_class = PaymentSettlementSerializer
+class InitiateMobileMoneyPaymentView(APIView):
+    """Initiate mobile money payment"""
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['status', 'payment_method', 'beneficiary_type']
-    ordering_fields = ['created_at', 'settlement_date', 'amount']
-    ordering = ['-created_at']
     
-    def get_queryset(self):
-        user = self.request.user
-        if user.user_type in ['merchant', 'farmer', 'delivery_agent']:
-            return PaymentSettlement.objects.filter(beneficiary=user)
-        else:
-            return PaymentSettlement.objects.all().select_related('beneficiary')
-
-
-class PaymentRefundListView(generics.ListAPIView):
-    """List payment refunds"""
-    serializer_class = PaymentRefundSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['status']
-    ordering_fields = ['created_at', 'refund_date', 'amount']
-    ordering = ['-created_at']
-    
-    def get_queryset(self):
-        user = self.request.user
-        if user.user_type == 'customer':
-            return PaymentRefund.objects.filter(
-                payment__customer=user
-            ).select_related('payment')
-        else:
-            return PaymentRefund.objects.all().select_related('payment')
-
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def process_payment(request):
-    """Process a payment"""
-    serializer = ProcessPaymentSerializer(data=request.data)
-    if serializer.is_valid():
-        order_id = serializer.validated_data.get('order_id')
-        agri_order_id = serializer.validated_data.get('agri_order_id')
-        amount = serializer.validated_data['amount']
-        payment_method = serializer.validated_data['payment_method']
-        description = serializer.validated_data.get('description', '')
-        
-        # Create payment record
-        payment = Payment.objects.create(
-            customer=request.user,
-            order_id=order_id,
-            agri_order_id=agri_order_id,
-            amount=amount,
-            currency='XAF',
-            payment_method=payment_method,
-            status='pending',
-            description=description,
-            transaction_id=str(uuid.uuid4())
-        )
-        
-        # Process based on payment method
-        if payment_method == 'mobile_money':
-            return Response({
-                'message': 'Mobile money payment initiated',
-                'payment_id': payment.id,
-                'transaction_id': payment.transaction_id,
-                'next_step': 'Provide mobile money details'
-            })
-        elif payment_method == 'cash_on_delivery':
-            payment.status = 'pending'
-            payment.save()
-            return Response({
-                'message': 'Cash on delivery payment registered',
-                'payment_id': payment.id,
-                'transaction_id': payment.transaction_id
-            })
-        else:
-            return Response({
-                'error': 'Unsupported payment method'
-            }, status=status.HTTP_400_BAD_REQUEST)
-    
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def process_mobile_money_payment(request):
-    """Process mobile money payment"""
-    serializer = MobileMoneyPaymentSerializer(data=request.data)
-    if serializer.is_valid():
-        phone_number = serializer.validated_data['phone_number']
-        provider = serializer.validated_data['provider']
-        amount = serializer.validated_data['amount']
-        currency = serializer.validated_data['currency']
-        description = serializer.validated_data.get('description', '')
-        order_id = serializer.validated_data.get('order_id')
-        agri_order_id = serializer.validated_data.get('agri_order_id')
-        
-        # Create payment record
-        payment = Payment.objects.create(
-            customer=request.user,
-            order_id=order_id,
-            agri_order_id=agri_order_id,
-            amount=amount,
-            currency=currency,
-            payment_method='mobile_money',
-            status='pending',
-            description=description,
-            transaction_id=str(uuid.uuid4())
-        )
-        
-        # Create mobile money transaction
-        mobile_transaction = MobileMoneyTransaction.objects.create(
-            payment=payment,
-            provider=provider,
-            phone_number=phone_number,
-            amount=amount,
-            currency=currency,
-            status='pending',
-            transaction_id=str(uuid.uuid4())
-        )
-        
-        # Here you would integrate with the actual mobile money API
-        # For now, we'll simulate the process
-        try:
-            # Simulate API call to mobile money provider
-            # response = call_mobile_money_api(provider, phone_number, amount, mobile_transaction.transaction_id)
-            
-            # For demo purposes, we'll mark it as successful
-            mobile_transaction.status = 'success'
-            mobile_transaction.response_data = {
-                'provider_response': 'success',
-                'transaction_reference': f'MM_{mobile_transaction.transaction_id}'
-            }
-            mobile_transaction.save()
-            
-            payment.status = 'completed'
-            payment.payment_date = timezone.now()
-            payment.processed_at = timezone.now()
-            payment.save()
-            
-            return Response({
-                'message': 'Mobile money payment processed successfully',
-                'payment_id': payment.id,
-                'transaction_id': mobile_transaction.transaction_id,
-                'status': 'completed'
-            })
-            
-        except Exception as e:
-            mobile_transaction.status = 'failed'
-            mobile_transaction.response_data = {'error': str(e)}
-            mobile_transaction.save()
-            
-            payment.status = 'failed'
-            payment.error_message = str(e)
-            payment.save()
-            
-            return Response({
-                'error': 'Mobile money payment failed',
-                'details': str(e)
-            }, status=status.HTTP_400_BAD_REQUEST)
-    
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def process_cash_on_delivery_payment(request):
-    """Process cash on delivery payment"""
-    serializer = CashOnDeliveryPaymentSerializer(data=request.data)
-    if serializer.is_valid():
-        order_id = serializer.validated_data.get('order_id')
-        agri_order_id = serializer.validated_data.get('agri_order_id')
-        amount = serializer.validated_data['amount']
-        delivery_agent_phone = serializer.validated_data.get('delivery_agent_phone')
-        
-        # Create payment record
-        payment = Payment.objects.create(
-            customer=request.user,
-            order_id=order_id,
-            agri_order_id=agri_order_id,
-            amount=amount,
-            currency='XAF',
-            payment_method='cash_on_delivery',
-            status='pending',
-            description='Cash on delivery payment',
-            transaction_id=str(uuid.uuid4()),
-            metadata={'delivery_agent_phone': delivery_agent_phone}
-        )
-        
-        return Response({
-            'message': 'Cash on delivery payment registered',
-            'payment_id': payment.id,
-            'transaction_id': payment.transaction_id,
-            'status': 'pending'
-        })
-    
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
-def check_payment_status(request, transaction_id):
-    """Check payment status"""
-    try:
-        payment = Payment.objects.get(transaction_id=transaction_id)
-        
-        # Check if user has permission to view this payment
-        if request.user != payment.customer and request.user != payment.merchant:
-            return Response(
-                {'error': 'Permission denied'},
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
-        return Response({
-            'transaction_id': transaction_id,
-            'status': payment.status,
-            'amount': payment.amount,
-            'currency': payment.currency,
-            'payment_method': payment.payment_method,
-            'payment_date': payment.payment_date,
-            'error_message': payment.error_message
-        })
-        
-    except Payment.DoesNotExist:
-        return Response(
-            {'error': 'Payment not found'},
-            status=status.HTTP_404_NOT_FOUND
-        )
-
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def create_refund(request):
-    """Create a payment refund"""
-    serializer = CreateRefundSerializer(data=request.data)
-    if serializer.is_valid():
-        payment_id = serializer.validated_data['payment_id']
-        amount = serializer.validated_data['amount']
-        reason = serializer.validated_data['reason']
-        notes = serializer.validated_data.get('notes', '')
+    def post(self, request):
+        """Initiate mobile money payment"""
+        serializer = InitiateMobileMoneyPaymentSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         try:
-            payment = Payment.objects.get(id=payment_id)
-            
-            # Check if user has permission to refund this payment
-            if request.user != payment.merchant and request.user.user_type != 'admin':
-                return Response(
-                    {'error': 'Permission denied'},
-                    status=status.HTTP_403_FORBIDDEN
+            with transaction.atomic():
+                # Get payment
+                payment = Payment.objects.get(
+                    id=serializer.validated_data['payment_id'],
+                    user=request.user
                 )
-            
-            # Check if refund amount is valid
-            if amount > payment.amount:
-                return Response(
-                    {'error': 'Refund amount cannot exceed original payment amount'},
-                    status=status.HTTP_400_BAD_REQUEST
+                
+                # Validate payment can be processed
+                if payment.payment_status != 'pending':
+                    return Response(
+                        {'error': 'Payment cannot be initiated'}, 
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+                
+                # Create mobile money transaction
+                mobile_transaction = MobileMoneyTransaction.objects.create(
+                    payment=payment,
+                    provider=serializer.validated_data['provider'],
+                    phone_number=serializer.validated_data['phone_number'],
+                    amount=payment.amount,
+                    status='initiated'
                 )
-            
-            # Create refund record
-            refund = PaymentRefund.objects.create(
-                payment=payment,
-                amount=amount,
-                currency=payment.currency,
-                reason=reason,
-                status='pending',
-                processed_by=request.user,
-                notes=notes
-            )
-            
-            return Response({
-                'message': 'Refund created successfully',
-                'refund_id': refund.id,
-                'amount': amount,
-                'status': 'pending'
-            })
-            
+                
+                # Update payment
+                payment.mobile_money_provider = serializer.validated_data['provider']
+                payment.mobile_money_phone = serializer.validated_data['phone_number']
+                payment.payment_status = 'processing'
+                payment.save()
+                
+                # Initiate payment with provider
+                provider_response = self._initiate_with_provider(mobile_transaction)
+                
+                if provider_response.get('success'):
+                    mobile_transaction.provider_transaction_id = provider_response.get('transaction_id')
+                    mobile_transaction.provider_reference = provider_response.get('reference')
+                    mobile_transaction.status = 'processing'
+                    mobile_transaction.provider_response = provider_response
+                    mobile_transaction.initiated_at = timezone.now()
+                    mobile_transaction.save()
+                    
+                    return Response({
+                        'message': 'Payment initiated successfully',
+                        'transaction_id': mobile_transaction.provider_transaction_id,
+                        'status': mobile_transaction.status
+                    })
+                else:
+                    # Revert payment status
+                    payment.payment_status = 'failed'
+                    payment.save()
+                    
+                    mobile_transaction.status = 'failed'
+                    mobile_transaction.error_message = provider_response.get('error', 'Provider error')
+                    mobile_transaction.save()
+                    
+                    return Response({
+                        'error': 'Failed to initiate payment',
+                        'details': provider_response.get('error')
+                    }, status=status.HTTP_400_BAD_REQUEST)
+                    
         except Payment.DoesNotExist:
             return Response(
-                {'error': 'Payment not found'},
+                {'error': 'Payment not found'}, 
                 status=status.HTTP_404_NOT_FOUND
             )
-    
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def request_settlement(request):
-    """Request a payment settlement"""
-    serializer = SettlementRequestSerializer(data=request.data)
-    if serializer.is_valid():
-        beneficiary_id = serializer.validated_data['beneficiary_id']
-        amount = serializer.validated_data['amount']
-        payment_method = serializer.validated_data['payment_method']
-        notes = serializer.validated_data.get('notes', '')
-        
-        # Check if user is requesting settlement for themselves
-        if str(request.user.id) != str(beneficiary_id):
+        except Exception as e:
+            logger.error(f"Error initiating mobile money payment: {str(e)}")
             return Response(
-                {'error': 'You can only request settlements for yourself'},
-                status=status.HTTP_403_FORBIDDEN
+                {'error': 'Internal server error'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        
-        # Create settlement record
-        settlement = PaymentSettlement.objects.create(
-            beneficiary=request.user,
-            beneficiary_type=request.user.user_type,
-            amount=amount,
-            currency='XAF',
-            payment_method=payment_method,
-            status='pending',
-            reference_number=str(uuid.uuid4()),
-            notes=notes
-        )
-        
-        return Response({
-            'message': 'Settlement request created successfully',
-            'settlement_id': settlement.id,
-            'amount': amount,
-            'status': 'pending'
-        })
     
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([permissions.AllowAny])
-def mobile_money_callback(request, provider):
-    """Handle mobile money callbacks"""
-    serializer = MobileMoneyCallbackSerializer(data=request.data)
-    if serializer.is_valid():
-        transaction_id = serializer.validated_data['transaction_id']
-        status = serializer.validated_data['status']
-        amount = serializer.validated_data['amount']
-        currency = serializer.validated_data['currency']
-        phone_number = serializer.validated_data['phone_number']
-        timestamp = serializer.validated_data['timestamp']
-        signature = serializer.validated_data.get('signature')
-        metadata = serializer.validated_data.get('metadata', {})
+    def _initiate_with_provider(self, mobile_transaction):
+        """Initiate payment with mobile money provider"""
+        provider = mobile_transaction.provider
+        amount = mobile_transaction.amount
+        phone = mobile_transaction.phone_number
         
         try:
-            # Find the mobile money transaction
-            mobile_transaction = MobileMoneyTransaction.objects.get(
-                transaction_id=transaction_id,
-                provider=provider
-            )
-            
+            if provider == 'mtn':
+                return self._initiate_mtn_payment(amount, phone)
+            elif provider == 'orange':
+                return self._initiate_orange_payment(amount, phone)
+            elif provider == 'moov':
+                return self._initiate_moov_payment(amount, phone)
+            else:
+                return {'success': False, 'error': 'Unsupported provider'}
+        except Exception as e:
+            logger.error(f"Provider API error for {provider}: {str(e)}")
+            return {'success': False, 'error': f'Provider API error: {str(e)}'}
+    
+    def _initiate_mtn_payment(self, amount, phone):
+        """Initiate MTN Mobile Money payment"""
+        # This would integrate with MTN Mobile Money API
+        # For now, return mock response
+        return {
+            'success': True,
+            'transaction_id': f'MTN_{int(timezone.now().timestamp())}',
+            'reference': f'REF_{int(timezone.now().timestamp())}',
+            'status': 'initiated'
+        }
+    
+    def _initiate_orange_payment(self, amount, phone):
+        """Initiate Orange Money payment"""
+        # This would integrate with Orange Money API
+        return {
+            'success': True,
+            'transaction_id': f'ORANGE_{int(timezone.now().timestamp())}',
+            'reference': f'REF_{int(timezone.now().timestamp())}',
+            'status': 'initiated'
+        }
+    
+    def _initiate_moov_payment(self, amount, phone):
+        """Initiate Moov Money payment"""
+        # This would integrate with Moov Money API
+        return {
+            'success': True,
+            'transaction_id': f'MOOV_{int(timezone.now().timestamp())}',
+            'reference': f'REF_{int(timezone.now().timestamp())}',
+            'status': 'initiated'
+        }
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def mobile_money_webhook(request, provider):
+    """Handle mobile money provider webhooks"""
+    try:
+        # Verify webhook signature (implement based on provider)
+        if not _verify_webhook_signature(request, provider):
+            logger.warning(f"Invalid webhook signature for {provider}")
+            return HttpResponse(status=400)
+        
+        # Parse webhook data
+        webhook_data = json.loads(request.body)
+        
+        # Create webhook record
+        webhook = PaymentWebhook.objects.create(
+            provider=provider,
+            webhook_id=webhook_data.get('id', ''),
+            event_type=webhook_data.get('event_type', ''),
+            payload=webhook_data
+        )
+        
+        # Process webhook based on event type
+        if webhook_data.get('event_type') == 'payment.success':
+            _process_successful_payment(webhook_data, provider)
+        elif webhook_data.get('event_type') == 'payment.failed':
+            _process_failed_payment(webhook_data, provider)
+        elif webhook_data.get('event_type') == 'payment.cancelled':
+            _process_cancelled_payment(webhook_data, provider)
+        
+        # Mark webhook as processed
+        webhook.is_processed = True
+        webhook.processed_at = timezone.now()
+        webhook.save()
+        
+        return HttpResponse(status=200)
+        
+    except Exception as e:
+        logger.error(f"Error processing {provider} webhook: {str(e)}")
+        if 'webhook' in locals():
+            webhook.processing_error = str(e)
+            webhook.save()
+        return HttpResponse(status=500)
+
+def _verify_webhook_signature(request, provider):
+    """Verify webhook signature from provider"""
+    # Implement signature verification based on provider
+    # For now, return True (implement proper verification)
+    return True
+
+def _process_successful_payment(webhook_data, provider):
+    """Process successful payment webhook"""
+    try:
+        transaction_id = webhook_data.get('transaction_id')
+        reference = webhook_data.get('reference')
+        
+        # Find mobile money transaction
+        mobile_transaction = MobileMoneyTransaction.objects.filter(
+            provider_transaction_id=transaction_id,
+            provider=provider
+        ).first()
+        
+        if mobile_transaction:
             # Update transaction status
-            mobile_transaction.status = status
-            mobile_transaction.callback_data = {
-                'status': status,
-                'amount': amount,
-                'currency': currency,
-                'phone_number': phone_number,
-                'timestamp': timestamp.isoformat(),
-                'signature': signature,
-                'metadata': metadata
-            }
+            mobile_transaction.status = 'success'
+            mobile_transaction.processed_at = timezone.now()
+            mobile_transaction.provider_response = webhook_data
             mobile_transaction.save()
             
             # Update payment status
             payment = mobile_transaction.payment
-            if status == 'success':
-                payment.status = 'completed'
-                payment.payment_date = timestamp
-                payment.processed_at = timezone.now()
-            elif status == 'failed':
-                payment.status = 'failed'
-                payment.error_message = metadata.get('error_message', 'Payment failed')
-            
+            payment.payment_status = 'completed'
+            payment.transaction_id = transaction_id
+            payment.completed_at = timezone.now()
             payment.save()
             
-            return Response({'status': 'success'})
+            # Update order status
+            if payment.order:
+                payment.order.payment_status = 'paid'
+                payment.order.save()
+            elif payment.agri_order:
+                payment.agri_order.payment_status = 'paid'
+                payment.agri_order.save()
             
-        except MobileMoneyTransaction.DoesNotExist:
+            logger.info(f"Payment {payment.reference_number} completed successfully")
+            
+    except Exception as e:
+        logger.error(f"Error processing successful payment: {str(e)}")
+
+def _process_failed_payment(webhook_data, provider):
+    """Process failed payment webhook"""
+    try:
+        transaction_id = webhook_data.get('transaction_id')
+        
+        mobile_transaction = MobileMoneyTransaction.objects.filter(
+            provider_transaction_id=transaction_id,
+            provider=provider
+        ).first()
+        
+        if mobile_transaction:
+            mobile_transaction.status = 'failed'
+            mobile_transaction.error_message = webhook_data.get('error_message', 'Payment failed')
+            mobile_transaction.provider_response = webhook_data
+            mobile_transaction.save()
+            
+            payment = mobile_transaction.payment
+            payment.payment_status = 'failed'
+            payment.save()
+            
+            logger.info(f"Payment {payment.reference_number} failed")
+            
+    except Exception as e:
+        logger.error(f"Error processing failed payment: {str(e)}")
+
+def _process_cancelled_payment(webhook_data, provider):
+    """Process cancelled payment webhook"""
+    try:
+        transaction_id = webhook_data.get('transaction_id')
+        
+        mobile_transaction = MobileMoneyTransaction.objects.filter(
+            provider_transaction_id=transaction_id,
+            provider=provider
+        ).first()
+        
+        if mobile_transaction:
+            mobile_transaction.status = 'cancelled'
+            mobile_transaction.provider_response = webhook_data
+            mobile_transaction.save()
+            
+            payment = mobile_transaction.payment
+            payment.payment_status = 'cancelled'
+            payment.save()
+            
+            logger.info(f"Payment {payment.reference_number} cancelled")
+            
+    except Exception as e:
+        logger.error(f"Error processing cancelled payment: {str(e)}")
+
+class CashOnDeliveryPaymentView(APIView):
+    """Handle cash on delivery payments"""
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request):
+        """Create cash on delivery payment"""
+        serializer = CreateCashOnDeliveryPaymentSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            with transaction.atomic():
+                # Create COD payment
+                cod_payment = serializer.save(delivery_agent=request.user)
+                
+                # Update payment status
+                payment = cod_payment.payment
+                payment.payment_status = 'completed'
+                payment.completed_at = timezone.now()
+                payment.save()
+                
+                # Update order status
+                if payment.order:
+                    payment.order.payment_status = 'paid'
+                    payment.order.save()
+                elif payment.agri_order:
+                    payment.agri_order.payment_status = 'paid'
+                    payment.agri_order.save()
+                
+                return Response({
+                    'message': 'Cash on delivery payment recorded successfully',
+                    'payment_id': payment.id
+                })
+                
+        except Exception as e:
+            logger.error(f"Error creating COD payment: {str(e)}")
             return Response(
-                {'error': 'Transaction not found'},
+                {'error': 'Internal server error'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class PaymentRefundView(APIView):
+    """Handle payment refunds"""
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request):
+        """Create payment refund"""
+        serializer = CreateRefundSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            with transaction.atomic():
+                # Get payment
+                payment = Payment.objects.get(id=serializer.validated_data['payment_id'])
+                
+                # Validate refund can be processed
+                if not payment.can_refund:
+                    return Response(
+                        {'error': 'Payment cannot be refunded'}, 
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+                
+                # Create refund
+                refund = PaymentRefund.objects.create(
+                    payment=payment,
+                    amount=serializer.validated_data['amount'],
+                    reason=serializer.validated_data['reason'],
+                    refund_method=serializer.validated_data['refund_method'],
+                    processed_by=request.user
+                )
+                
+                # Update payment status
+                payment.payment_status = 'refunded'
+                payment.save()
+                
+                return Response({
+                    'message': 'Refund created successfully',
+                    'refund_id': refund.id
+                })
+                
+        except Payment.DoesNotExist:
+            return Response(
+                {'error': 'Payment not found'}, 
                 status=status.HTTP_404_NOT_FOUND
             )
-    
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        except Exception as e:
+            logger.error(f"Error creating refund: {str(e)}")
+            return Response(
+                {'error': 'Internal server error'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
-def payment_dashboard_stats(request):
-    """Get payment dashboard statistics"""
-    user = request.user
+def payment_summary(request):
+    """Get payment summary statistics"""
+    try:
+        # Get date range from query params
+        days = int(request.query_params.get('days', 30))
+        end_date = timezone.now().date()
+        start_date = end_date - timedelta(days=days)
+        
+        # Get payments in date range
+        payments = Payment.objects.filter(
+            created_at__date__gte=start_date,
+            created_at__date__lte=end_date
+        )
+        
+        # Calculate statistics
+        total_payments = payments.count()
+        total_amount = sum(p.amount for p in payments)
+        successful_payments = payments.filter(payment_status='completed').count()
+        failed_payments = payments.filter(payment_status='failed').count()
+        pending_payments = payments.filter(payment_status='pending').count()
+        
+        mobile_money_payments = payments.filter(payment_method='mobile_money').count()
+        cod_payments = payments.filter(payment_method='cash_on_delivery').count()
+        
+        # Provider breakdown
+        mtn_payments = payments.filter(mobile_money_provider='mtn').count()
+        orange_payments = payments.filter(mobile_money_provider='orange').count()
+        moov_payments = payments.filter(mobile_money_provider='moov').count()
+        
+        summary = PaymentSummarySerializer({
+            'total_payments': total_payments,
+            'total_amount': total_amount,
+            'successful_payments': successful_payments,
+            'failed_payments': failed_payments,
+            'pending_payments': pending_payments,
+            'mobile_money_payments': mobile_money_payments,
+            'cod_payments': cod_payments,
+            'mtn_payments': mtn_payments,
+            'orange_payments': orange_payments,
+            'moov_payments': moov_payments,
+            'period_start': start_date,
+            'period_end': end_date
+        })
+        
+        return Response(summary.data)
+        
+    except Exception as e:
+        logger.error(f"Error getting payment summary: {str(e)}")
+        return Response(
+            {'error': 'Internal server error'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def verify_payment(request):
+    """Verify payment status"""
+    serializer = PaymentVerificationSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    if user.user_type == 'customer':
-        # Customer stats
-        total_payments = Payment.objects.filter(customer=user).count()
-        total_spent = Payment.objects.filter(
-            customer=user,
-            status='completed'
-        ).aggregate(total=Sum('amount'))['total'] or 0
+    try:
+        payment = Payment.objects.get(
+            id=serializer.validated_data['payment_id'],
+            user=request.user
+        )
         
-        recent_payments = Payment.objects.filter(
-            customer=user
-        ).order_by('-created_at')[:5]
+        # For mobile money, check with provider
+        if payment.payment_method == 'mobile_money' and payment.mobile_money_transaction:
+            mobile_transaction = payment.mobile_money_transaction
+            verification_result = _verify_with_provider(mobile_transaction)
+            
+            if verification_result.get('status_changed'):
+                # Update payment status
+                payment.payment_status = verification_result['new_status']
+                if verification_result['new_status'] == 'completed':
+                    payment.completed_at = timezone.now()
+                payment.save()
+                
+                # Update order status
+                if payment.order:
+                    payment.order.payment_status = verification_result['new_status']
+                    payment.order.save()
+                elif payment.agri_order:
+                    payment.agri_order.payment_status = verification_result['new_status']
+                    payment.agri_order.save()
         
-    elif user.user_type in ['merchant', 'farmer']:
-        # Merchant/Farmer stats
-        total_payments = Payment.objects.filter(merchant=user).count()
-        total_received = Payment.objects.filter(
-            merchant=user,
-            status='completed'
-        ).aggregate(total=Sum('amount'))['total'] or 0
+        return Response({
+            'payment_id': payment.id,
+            'status': payment.payment_status,
+            'verified_at': timezone.now()
+        })
         
-        recent_payments = Payment.objects.filter(
-            merchant=user
-        ).order_by('-created_at')[:5]
+    except Payment.DoesNotExist:
+        return Response(
+            {'error': 'Payment not found'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        logger.error(f"Error verifying payment: {str(e)}")
+        return Response(
+            {'error': 'Internal server error'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+def _verify_with_provider(mobile_transaction):
+    """Verify payment status with provider"""
+    try:
+        provider = mobile_transaction.provider
+        transaction_id = mobile_transaction.provider_transaction_id
         
-    else:
-        # Admin stats
-        total_payments = Payment.objects.count()
-        total_received = Payment.objects.filter(
-            status='completed'
-        ).aggregate(total=Sum('amount'))['total'] or 0
-        
-        recent_payments = Payment.objects.all().order_by('-created_at')[:5]
-    
-    payments_serializer = PaymentSerializer(recent_payments, many=True)
-    
-    return Response({
-        'total_payments': total_payments,
-        'total_amount': total_received,
-        'recent_payments': payments_serializer.data
-    }) 
+        if provider == 'mtn':
+            return _verify_mtn_payment(transaction_id)
+        elif provider == 'orange':
+            return _verify_orange_payment(transaction_id)
+        elif provider == 'moov':
+            return _verify_moov_payment(transaction_id)
+        else:
+            return {'status_changed': False}
+            
+    except Exception as e:
+        logger.error(f"Error verifying with provider: {str(e)}")
+        return {'status_changed': False}
+
+def _verify_mtn_payment(transaction_id):
+    """Verify MTN payment status"""
+    # This would call MTN API to verify payment
+    # For now, return mock response
+    return {'status_changed': False}
+
+def _verify_orange_payment(transaction_id):
+    """Verify Orange payment status"""
+    # This would call Orange API to verify payment
+    return {'status_changed': False}
+
+def _verify_moov_payment(transaction_id):
+    """Verify Moov payment status"""
+    # This would call Moov API to verify payment
+    return {'status_changed': False} 

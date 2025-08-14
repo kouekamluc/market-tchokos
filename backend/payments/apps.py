@@ -3,4 +3,12 @@ from django.apps import AppConfig
 
 class PaymentsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'payments' 
+    name = 'payments'
+    verbose_name = 'Payment Management'
+    
+    def ready(self):
+        """Import signals when app is ready"""
+        try:
+            import payments.signals
+        except ImportError:
+            pass 

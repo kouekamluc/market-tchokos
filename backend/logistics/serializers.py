@@ -157,7 +157,12 @@ class UpdateTaskStatusSerializer(serializers.Serializer):
 class CompleteTaskSerializer(serializers.Serializer):
     """Serializer for completing delivery tasks"""
     payment_confirmed = serializers.BooleanField()
-    payment_method = serializers.ChoiceField(choices=Payment.PAYMENT_METHOD)
+    payment_method = serializers.ChoiceField(choices=[
+        ('cash', 'Cash on Delivery'),
+        ('card', 'Credit/Debit Card'),
+        ('mobile_money', 'Mobile Money'),
+        ('bank_transfer', 'Bank Transfer'),
+    ])
     customer_rating = serializers.IntegerField(min_value=1, max_value=5, required=False)
     customer_feedback = serializers.CharField(required=False, allow_blank=True)
     notes = serializers.CharField(required=False, allow_blank=True) 

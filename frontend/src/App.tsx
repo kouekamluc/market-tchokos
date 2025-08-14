@@ -7,6 +7,7 @@ import { LoginForm } from './components/LoginForm'
 import { AuthProvider } from './contexts/AuthContext'
 import { LocationProvider } from './contexts/LocationContext'
 import { OrderProvider } from './contexts/OrderContext'
+import { CartProvider } from './contexts/CartContext'
 import { 
   ProtectedRoute, 
   CustomerRoute, 
@@ -24,7 +25,7 @@ import Help from './pages/Help'
 import Terms from './pages/Terms'
 import Careers from './pages/Careers'
 import AgriConnect from './pages/AgriConnect'
-import Marketplace from './pages/Marketplace'
+
 import Checkout from './pages/Checkout'
 import OrderTracking from './pages/OrderTracking'
 import NotFound from './pages/NotFound'
@@ -34,6 +35,8 @@ import FarmerDashboard from './pages/FarmerDashboard'
 import DeliveryAgent from './pages/DeliveryAgent'
 import ProductDetail from './pages/ProductDetail'
 import Cart from './pages/Cart'
+import UserDashboard from './pages/UserDashboard'
+import Orders from './pages/Orders'
 
 import { RegisterForm } from './components/RegisterForm'
 // Components
@@ -55,7 +58,8 @@ function App() {
         <AuthProvider>
           <LocationProvider>
             <OrderProvider>
-              <Router>
+              <CartProvider>
+                <Router>
                 <div className="min-h-screen bg-background">
                   <Header />
                   <main>
@@ -76,11 +80,7 @@ function App() {
                           <AgriConnect />
                         </AuthenticatedRoute>
                       } />
-                      <Route path="/marketplace" element={
-                        <AuthenticatedRoute>
-                          <Marketplace />
-                        </AuthenticatedRoute>
-                      } />
+
                       <Route path="/product/:id" element={
                         <AuthenticatedRoute>
                           <ProductDetail />
@@ -99,6 +99,23 @@ function App() {
                       <Route path="/order/:orderId" element={
                         <AuthenticatedRoute>
                           <OrderTracking />
+                        </AuthenticatedRoute>
+                      } />
+                      
+                      {/* User Dashboard and Orders */}
+                      <Route path="/dashboard" element={
+                        <AuthenticatedRoute>
+                          <UserDashboard />
+                        </AuthenticatedRoute>
+                      } />
+                      <Route path="/orders" element={
+                        <AuthenticatedRoute>
+                          <Orders />
+                        </AuthenticatedRoute>
+                      } />
+                      <Route path="/orders/:orderId" element={
+                        <AuthenticatedRoute>
+                          <Orders />
                         </AuthenticatedRoute>
                       } />
                       
@@ -129,6 +146,7 @@ function App() {
                   <Toaster />
                 </div>
               </Router>
+              </CartProvider>
             </OrderProvider>
           </LocationProvider>
         </AuthProvider>

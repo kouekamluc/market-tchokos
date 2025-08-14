@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from '@/components/SearchBar';
-import MarketplaceCards from '@/components/MarketplaceCards';
 import ProductFeed from '@/components/ProductFeed';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -20,13 +19,13 @@ const Index = () => {
         
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Your Digital Marketplace
+            Your Agricultural Marketplace
             <span className="block bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent animate-pulse">
-              Connected by Location
+              Fresh from Farm to Table
             </span>
           </h1>
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Shop fresh produce directly from farmers or browse retail goods from local businesses. 
+            Shop fresh produce directly from local farmers. 
             All delivered precisely to your pin-dropped location.
           </p>
           
@@ -57,11 +56,11 @@ const Index = () => {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             <div className="text-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">500+</div>
-              <div className="text-gray-400 mt-2">Local Merchants</div>
+              <div className="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">100+</div>
+              <div className="text-gray-400 mt-2">Local Farmers</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">10K+</div>
+              <div className="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">5K+</div>
               <div className="text-gray-400 mt-2">Happy Customers</div>
             </div>
             <div className="text-center">
@@ -72,15 +71,59 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Marketplace Cards */}
+      {/* AgriConnect Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Choose Your Shopping Experience</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Fresh from the Farm</h2>
           <p className="text-gray-300 text-lg">
-            Two specialized marketplaces designed for your unique needs
+            Connect directly with local farmers for the freshest produce
           </p>
         </div>
-        <MarketplaceCards />
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-br from-green-500/10 to-blue-500/10 p-8 rounded-xl border border-green-500/20 hover:border-green-500/40 transition-all duration-300">
+              <div className="text-4xl mb-4">🌾</div>
+              <h3 className="text-xl font-semibold text-white mb-3">Fresh Produce</h3>
+              <p className="text-gray-300 mb-4">
+                Get the freshest fruits, vegetables, and grains directly from local farms
+              </p>
+              <Link 
+                to="/agri-connect" 
+                className="inline-flex items-center text-green-400 hover:text-green-300 font-medium"
+              >
+                Browse Products →
+              </Link>
+            </div>
+            
+            <div className="bg-gradient-to-br from-blue-500/10 to-green-500/10 p-8 rounded-xl border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300">
+              <div className="text-4xl mb-4">🚚</div>
+              <h3 className="text-xl font-semibold text-white mb-3">Fast Delivery</h3>
+              <p className="text-gray-300 mb-4">
+                Same-day delivery to your exact location with real-time tracking
+              </p>
+              <Link 
+                to="/agri-connect" 
+                className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium"
+              >
+                Order Now →
+              </Link>
+            </div>
+            
+            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-8 rounded-xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
+              <div className="text-4xl mb-4">👨‍🌾</div>
+              <h3 className="text-xl font-semibold text-white mb-3">Support Farmers</h3>
+              <p className="text-gray-300 mb-4">
+                Help local farmers grow their business while getting quality produce
+              </p>
+              <Link 
+                to="/agri-connect" 
+                className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium"
+              >
+                Learn More →
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Product Feed */}
@@ -96,7 +139,7 @@ const Index = () => {
               ChronoConnect
             </h3>
             <p className="text-gray-300">
-              Connecting communities through precise location-based commerce
+              Connecting communities through fresh, local agricultural commerce
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">

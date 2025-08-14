@@ -28,12 +28,12 @@ class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['type', 'priority', 'is_read', 'is_sent']
+    filterset_fields = ['notification_type', 'priority', 'is_read', 'is_sent']
     ordering_fields = ['created_at', 'priority']
     ordering = ['-created_at']
     
     def get_queryset(self):
-        return Notification.objects.filter(recipient=self.request.user)
+        return Notification.objects.filter(user=self.request.user)
 
 
 class NotificationDetailView(generics.RetrieveAPIView):

@@ -48,7 +48,6 @@ const Header = () => {
   // Base navigation items - only show to authenticated users
   const baseNavItems = [
     { path: '/', label: 'Home' },
-    { path: '/marketplace', label: 'Marketplace' },
     { path: '/agri-connect', label: 'AgriConnect' },
   ];
 
@@ -203,6 +202,18 @@ const Header = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-gray-700" />
                     <DropdownMenuItem asChild className="text-gray-200 hover:bg-gray-700 hover:text-white">
+                      <Link to="/dashboard" className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="text-gray-200 hover:bg-gray-700 hover:text-white">
+                      <Link to="/orders" className="flex items-center gap-2">
+                        <Package className="w-4 h-4" />
+                        My Orders
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="text-gray-200 hover:bg-gray-700 hover:text-white">
                       <Link to="/profile" className="flex items-center gap-2">
                         <User className="w-4 h-4" />
                         Profile
@@ -282,6 +293,22 @@ const Header = () => {
                   <div className="px-3 py-2 text-sm text-gray-400">
                     Signed in as {user?.first_name} {user?.last_name}
                   </div>
+                  <Link
+                    to="/dashboard"
+                    className="px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-green-500/10 hover:to-blue-500/10 flex items-center gap-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <User className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/orders"
+                    className="px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-green-500/10 hover:to-blue-500/10 flex items-center gap-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Package className="w-4 h-4" />
+                    My Orders
+                  </Link>
                   <Link
                     to="/profile"
                     className="px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-green-500/10 hover:to-blue-500/10 flex items-center gap-2"

@@ -21,7 +21,6 @@ urlpatterns = [
     
     # API endpoints
     path('api/users/', include('users.urls')),
-    path('api/marketplace/', include('marketplace.urls')),
     path('api/agri-connect/', include('agri_connect.urls')),
     path('api/logistics/', include('logistics.urls')),
     path('api/payments/', include('payments.urls')),

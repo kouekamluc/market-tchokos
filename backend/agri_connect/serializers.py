@@ -26,16 +26,16 @@ class AgriProductImageSerializer(serializers.ModelSerializer):
 
 class AgriProductReviewSerializer(serializers.ModelSerializer):
     """Serializer for AgriProductReview model"""
-    customer_name = serializers.CharField(source='customer.get_full_name', read_only=True)
-    customer_avatar = serializers.CharField(source='customer.profile_picture', read_only=True)
+    user_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    user_avatar = serializers.CharField(source='user.profile_picture', read_only=True)
     
     class Meta:
         model = AgriProductReview
         fields = [
-            'id', 'product', 'customer', 'customer_name', 'customer_avatar',
-            'rating', 'comment', 'created_at'
+            'id', 'product', 'user', 'user_name', 'user_avatar',
+            'rating', 'title', 'comment', 'created_at'
         ]
-        read_only_fields = ['id', 'customer', 'created_at']
+        read_only_fields = ['id', 'user', 'created_at']
 
 
 class AgriProductSerializer(serializers.ModelSerializer):
@@ -44,15 +44,13 @@ class AgriProductSerializer(serializers.ModelSerializer):
     reviews = AgriProductReviewSerializer(many=True, read_only=True)
     farmer_name = serializers.CharField(source='farmer.business_name', read_only=True)
     category_name = serializers.CharField(source='category.name', read_only=True)
-    average_rating = serializers.FloatField(read_only=True)
-    review_count = serializers.IntegerField(read_only=True)
     
     class Meta:
         model = AgriProduct
         fields = [
             'id', 'farmer', 'farmer_name', 'category', 'category_name',
-            'name', 'description', 'price_per_unit', 'available_quantity', 'unit', 'images',
-            'reviews', 'average_rating', 'review_count', 'is_active',
+            'name', 'description', 'price_per_unit', 'price', 'sale_price', 'available_quantity', 'stock_quantity', 'unit', 'images',
+            'reviews', 'average_rating', 'review_count', 'is_available', 'is_active',
             'is_on_sale', 'discount_percentage', 'is_in_stock', 'created_at'
         ]
         read_only_fields = ['id', 'farmer', 'created_at', 'average_rating', 'review_count']
@@ -64,14 +62,14 @@ class AgriProductDetailSerializer(AgriProductSerializer):
     class Meta(AgriProductSerializer.Meta):
         fields = AgriProductSerializer.Meta.fields + [
             'is_organic', 'harvest_date', 'farm_location', 'farm_name', 'farming_method',
-            'days_since_harvest', 'is_fresh', 'quality_grade', 'expiry_date'
+            'days_since_harvest', 'is_fresh', 'quality_grade', 'expiry_date', 'farm'
         ]
 
 
 class AgriCartItemSerializer(serializers.ModelSerializer):
     """Serializer for AgriCartItem model"""
     product = AgriProductSerializer(read_only=True)
-    product_id = serializers.IntegerField(write_only=True)
+    product_id = serializers.UUIDField(write_only=True)
     total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     
     class Meta:
@@ -110,16 +108,15 @@ class AgriOrderSerializer(serializers.ModelSerializer):
     """Serializer for AgriOrder model"""
     items = AgriOrderItemSerializer(many=True, read_only=True)
     customer_name = serializers.CharField(source='customer.get_full_name', read_only=True)
-    delivery_address = serializers.CharField(source='delivery_address', read_only=True)
     
     class Meta:
         model = AgriOrder
         fields = [
-            'id', 'customer', 'customer_name', 'items', 'delivery_address',
+            'id', 'order_number', 'customer', 'customer_name', 'items', 'delivery_address',
             'total_amount', 'delivery_fee', 'commission_amount', 'status',
             'payment_method', 'payment_status', 'created_at'
         ]
-        read_only_fields = ['id', 'customer', 'created_at']
+        read_only_fields = ['id', 'order_number', 'customer', 'created_at']
 
 
 class AgriOrderDetailSerializer(AgriOrderSerializer):
@@ -127,8 +124,8 @@ class AgriOrderDetailSerializer(AgriOrderSerializer):
     
     class Meta(AgriOrderSerializer.Meta):
         fields = AgriOrderSerializer.Meta.fields + [
-            'delivery_location', 'delivery_contact', 'notes', 'estimated_delivery',
-            'actual_delivery', 'delivery_agent'
+            'delivery_location', 'delivery_landmark', 'delivery_contact', 'notes',
+            'estimated_delivery', 'actual_delivery', 'delivery_agent', 'updated_at'
         ]
 
 
@@ -153,7 +150,7 @@ class HarvestScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = HarvestSchedule
         fields = [
-            'id', 'farmer', 'product', 'planned_harvest_date',
+            'id', 'farmer', 'product', 'farm', 'farm_name', 'planned_harvest_date',
             'expected_quantity', 'unit', 'notes', 'is_completed', 'actual_harvest_date',
             'actual_quantity', 'created_at', 'updated_at'
         ]
@@ -162,7 +159,7 @@ class HarvestScheduleSerializer(serializers.ModelSerializer):
 
 class AddToAgriCartSerializer(serializers.Serializer):
     """Serializer for adding items to agri cart"""
-    product_id = serializers.IntegerField()
+    product_id = serializers.UUIDField()
     quantity = serializers.IntegerField(min_value=1)
 
 
@@ -173,6 +170,6 @@ class UpdateAgriCartItemSerializer(serializers.Serializer):
 
 class CreateAgriOrderSerializer(serializers.Serializer):
     """Serializer for creating agri orders"""
-    delivery_address_id = serializers.UUIDField()
+    delivery_address = serializers.CharField()
     payment_method = serializers.ChoiceField(choices=AgriOrder.PAYMENT_METHODS)
     notes = serializers.CharField(required=False, allow_blank=True) 

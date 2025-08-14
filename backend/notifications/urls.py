@@ -3,13 +3,13 @@ from . import views
 
 urlpatterns = [
     # Notifications
-    path('notifications/', views.NotificationListView.as_view(), name='notification-list'),
-    path('notifications/<uuid:pk>/', views.NotificationDetailView.as_view(), name='notification-detail'),
-    path('notifications/create/', views.create_notification, name='create-notification'),
-    path('notifications/send/', views.send_notification, name='send-notification'),
-    path('notifications/mark-read/', views.mark_notifications_read, name='mark-notifications-read'),
-    path('notifications/unread-count/', views.unread_notifications_count, name='unread-notifications-count'),
-    path('notifications/dashboard-stats/', views.notification_dashboard_stats, name='notification-dashboard-stats'),
+    path('', views.NotificationListView.as_view(), name='notification-list'),
+    path('<uuid:pk>/', views.NotificationDetailView.as_view(), name='notification-detail'),
+    path('create/', views.create_notification, name='create-notification'),
+    path('send/', views.send_notification, name='send-notification'),
+    path('mark-read/', views.mark_notifications_read, name='mark-notifications-read'),
+    path('unread-count/', views.unread_notifications_count, name='unread-notifications-count'),
+    path('dashboard-stats/', views.notification_dashboard_stats, name='notification-dashboard-stats'),
     
     # Notification templates
     path('templates/', views.NotificationTemplateListView.as_view(), name='notification-template-list'),

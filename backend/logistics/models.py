@@ -3,7 +3,7 @@ from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.geos import Point
 from django.utils import timezone
 from users.models import User
-from marketplace.models import Order as MarketplaceOrder
+
 from agri_connect.models import AgriOrder
 import uuid
 
@@ -26,7 +26,7 @@ class DeliveryTask(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='delivery_tasks')
-    merchant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='merchant_tasks')
+    farmer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='farmer_tasks')
     delivery_agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='agent_tasks', null=True, blank=True)
     
     # Task details
@@ -49,8 +49,7 @@ class DeliveryTask(models.Model):
     task_number = models.CharField(max_length=20, unique=True, blank=True)
     
     # Order references
-    marketplace_order = models.ForeignKey(MarketplaceOrder, on_delete=models.CASCADE, null=True, blank=True)
-    agri_order = models.ForeignKey(AgriOrder, on_delete=models.CASCADE, null=True, blank=True)
+    agri_order = models.ForeignKey('agri_connect.AgriOrder', on_delete=models.CASCADE, null=True, blank=True)
     
     # Financial details
     base_fare = models.DecimalField(max_digits=10, decimal_places=2)
@@ -91,7 +90,7 @@ class DeliveryTask(models.Model):
     @property
     def order(self):
         """Get the associated order"""
-        return self.marketplace_order or self.agri_order
+        return self.agri_order
     
     @property
     def customer(self):
@@ -101,12 +100,10 @@ class DeliveryTask(models.Model):
         return None
     
     @property
-    def merchant(self):
-        """Get the merchant/farmer from the order"""
-        if self.marketplace_order:
-            return self.marketplace_order.items.first().product.merchant if self.marketplace_order.items.exists() else None
-        elif self.agri_order:
-            return self.agri_order.items.first().product.farmer if self.agri_order.items.exists() else None
+    def farmer(self):
+        """Get the farmer from the order"""
+        if self.agri_order and self.agri_order.items.exists():
+            return self.agri_order.items.first().product.farmer
         return None
     
     @property

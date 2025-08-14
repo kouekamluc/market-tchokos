@@ -6,15 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Minus, Plus, ShoppingCart, MapPin, ArrowLeft, Package } from 'lucide-react';
 import { toast } from 'sonner';
-import { useCart, useUpdateCartItem, useRemoveFromCart, useClearCart } from '@/hooks/useApi';
+import { useCart } from '@/contexts/CartContext';
 import { Cart as CartType } from '@/lib/api';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { data: cart, isLoading, error } = useCart();
-  const updateCartItem = useUpdateCartItem();
-  const removeFromCart = useRemoveFromCart();
-  const clearCart = useClearCart();
+  const { cart, isLoading, error, updateCartItem, removeFromCart, clearCart } = useCart();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-CM', {
@@ -31,7 +28,7 @@ const Cart = () => {
     }
     
     try {
-      await updateCartItem.mutateAsync({ itemId, quantity: newQuantity });
+      await updateCartItem(itemId, newQuantity);
       toast.success('Cart updated');
     } catch (error) {
       toast.error('Failed to update cart');
@@ -40,7 +37,7 @@ const Cart = () => {
 
   const handleRemoveItem = async (itemId: number) => {
     try {
-      await removeFromCart.mutateAsync(itemId);
+      await removeFromCart(itemId);
       toast.success('Item removed from cart');
     } catch (error) {
       toast.error('Failed to remove item');
@@ -49,7 +46,7 @@ const Cart = () => {
 
   const handleClearCart = async () => {
     try {
-      await clearCart.mutateAsync();
+      await clearCart();
       toast.success('Cart cleared');
     } catch (error) {
       toast.error('Failed to clear cart');

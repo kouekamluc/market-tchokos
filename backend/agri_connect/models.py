@@ -38,8 +38,12 @@ class AgriProduct(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     price_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Current selling price
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Sale price if on discount
+    original_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     unit = models.CharField(max_length=50)  # kg, pieces, etc.
     available_quantity = models.PositiveIntegerField()
+    stock_quantity = models.PositiveIntegerField(default=0)
     
     # Product characteristics
     harvest_date = models.DateField()
@@ -47,6 +51,9 @@ class AgriProduct(models.Model):
     farm_location = gis_models.PointField()
     farm_name = models.CharField(max_length=200, blank=True)
     farming_method = models.CharField(max_length=100, blank=True)  # Traditional, Modern, etc.
+    
+    # Farm reference
+    farm = models.ForeignKey('Farm', on_delete=models.CASCADE, related_name='products', null=True, blank=True)
     
     # Quality indicators
     is_organic = models.BooleanField(default=False)
@@ -56,6 +63,11 @@ class AgriProduct(models.Model):
         ('B', 'Grade B'),
         ('C', 'Grade C'),
     ], default='A')
+    
+    # Additional fields for frontend compatibility
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    review_count = models.PositiveIntegerField(default=0)
+    is_available = models.BooleanField(default=True)
     
     # Status
     is_active = models.BooleanField(default=True)
@@ -167,7 +179,7 @@ class AgriProductReview(models.Model):
 class AgriCart(models.Model):
     """AgriConnect shopping cart"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='agri_carts')
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='agri_carts')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
@@ -178,7 +190,7 @@ class AgriCart(models.Model):
         verbose_name_plural = 'Agri Carts'
     
     def __str__(self):
-        return f"Agri Cart for {self.user.get_full_name()}"
+        return f"Agri Cart for {self.customer.get_full_name()}"
     
     @property
     def total_items(self):
@@ -191,7 +203,7 @@ class AgriCart(models.Model):
     @property
     def delivery_fee(self):
         from django.conf import settings
-        if self.subtotal >= settings.FREE_DELIVERY_THRESHOLD:
+        if self.subtotal >= getattr(settings, 'FREE_DELIVERY_THRESHOLD', 10000):
             return 0
         return 500  # Default delivery fee
     
@@ -254,6 +266,7 @@ class AgriOrder(models.Model):
     ]
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    order_number = models.CharField(max_length=20, unique=True, blank=True)
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='agri_orders')
     
     # Order details
@@ -261,11 +274,12 @@ class AgriOrder(models.Model):
     delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     commission_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     
-    # Delivery details
+    # Delivery details - using TextField for now since we don't have an Address model
     delivery_address = models.TextField()
-    delivery_location = gis_models.PointField()
+    delivery_location = gis_models.PointField(null=True, blank=True)
     delivery_landmark = models.CharField(max_length=200, blank=True)
-    delivery_contact = models.CharField(max_length=15)
+    delivery_contact = models.CharField(max_length=15, blank=True)
+    notes = models.TextField(blank=True)
     
     # Status
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
@@ -277,6 +291,11 @@ class AgriOrder(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     delivered_at = models.DateTimeField(null=True, blank=True)
     
+    # Delivery tracking
+    estimated_delivery = models.DateTimeField(null=True, blank=True)
+    actual_delivery = models.DateTimeField(null=True, blank=True)
+    delivery_agent = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='delivery_orders')
+    
     class Meta:
         db_table = 'agri_orders'
         verbose_name = 'Agricultural Order'
@@ -284,7 +303,7 @@ class AgriOrder(models.Model):
         ordering = ['-created_at']
     
     def __str__(self):
-        return f"Agri Order {self.id} - {self.customer.get_full_name()}"
+        return f"Order {self.order_number} - {self.customer.get_full_name()}"
     
     def save(self, *args, **kwargs):
         if not self.order_number:
@@ -295,10 +314,9 @@ class AgriOrder(models.Model):
         """Generate unique order number"""
         import random
         import string
-        while True:
-            order_number = f"AG{timezone.now().strftime('%Y%m%d')}{''.join(random.choices(string.digits, k=6))}"
-            if not AgriOrder.objects.filter(order_number=order_number).exists():
-                return order_number
+        timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
+        random_chars = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        return f"AGRI{timestamp}{random_chars}"
 
 
 class AgriOrderItem(models.Model):

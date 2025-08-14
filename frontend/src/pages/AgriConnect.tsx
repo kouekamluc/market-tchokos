@@ -13,9 +13,11 @@ import SearchBar from '@/components/SearchBar';
 import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
+import { useCart } from '@/contexts/CartContext';
 
 const AgriConnect = () => {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
@@ -101,10 +103,13 @@ const AgriConnect = () => {
     navigate(`/product/${productId}`);
   };
 
-  const handleAddToCart = (e: React.MouseEvent, product: any) => {
+  const handleAddToCart = async (e: React.MouseEvent, product: any) => {
     e.stopPropagation(); // Prevent card click
-    toast.success(`${product.name} added to cart!`);
-    // Here you would typically add to cart context
+    try {
+      await addToCart(product, 1);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
   };
 
   const clearFilters = () => {
