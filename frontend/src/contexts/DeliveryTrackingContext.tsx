@@ -42,7 +42,7 @@ interface DeliveryTrackingContextType {
   etaUpdates: ETAUpdate[];
   connect: (orderId: string) => void;
   disconnect: () => void;
-  sendMessage: (message: any) => void;
+  sendMessage: (message: Record<string, unknown>) => void;
   clearUpdates: () => void;
 }
 
@@ -96,7 +96,7 @@ export const DeliveryTrackingProvider: React.FC<DeliveryTrackingProviderProps> =
     };
 
     setSocket(newSocket);
-  }, [socket]);
+  }, [socket, handleWebSocketMessage]);
 
   const disconnect = useCallback(() => {
     if (socket) {
@@ -107,7 +107,7 @@ export const DeliveryTrackingProvider: React.FC<DeliveryTrackingProviderProps> =
     }
   }, [socket]);
 
-  const handleWebSocketMessage = useCallback((data: any) => {
+  const handleWebSocketMessage = useCallback((data: { type: string; [key: string]: unknown }) => {
     switch (data.type) {
       case 'order_status':
         setOrderStatus(data.data);
@@ -141,7 +141,7 @@ export const DeliveryTrackingProvider: React.FC<DeliveryTrackingProviderProps> =
     }
   }, []);
 
-  const sendMessage = useCallback((message: any) => {
+  const sendMessage = useCallback((message: Record<string, unknown>) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(message));
     } else {

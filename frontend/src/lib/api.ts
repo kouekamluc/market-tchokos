@@ -247,7 +247,7 @@ export interface Notification {
   message: string;
   notification_type: 'order_update' | 'delivery_update' | 'payment_update' | 'system';
   is_read: boolean;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   created_at: string;
 }
 
@@ -774,7 +774,7 @@ const api = {
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       const error = new Error(`HTTP error! status: ${response.status}`);
-      (error as any).response = { data: errorData, status: response.status };
+      (error as Record<string, unknown>).response = { data: errorData, status: response.status };
       throw error;
     }
     
@@ -783,7 +783,7 @@ const api = {
     };
   },
   
-  post: async (url: string, data?: any) => {
+  post: async (url: string, data?: Record<string, unknown>) => {
     const token = localStorage.getItem('access_token');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -802,7 +802,7 @@ const api = {
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       const error = new Error(`HTTP error! status: ${response.status}`);
-      (error as any).response = { data: errorData, status: response.status };
+      (error as Record<string, unknown>).response = { data: errorData, status: response.status };
       throw error;
     }
     
@@ -811,7 +811,7 @@ const api = {
     };
   },
   
-  put: async (url: string, data?: any) => {
+  put: async (url: string, data?: Record<string, unknown>) => {
     const token = localStorage.getItem('access_token');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -830,7 +830,7 @@ const api = {
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       const error = new Error(`HTTP error! status: ${response.status}`);
-      (error as any).response = { data: errorData, status: response.status };
+      (error as Record<string, unknown>).response = { data: errorData, status: response.status };
       throw error;
     }
     
@@ -857,7 +857,7 @@ const api = {
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       const error = new Error(`HTTP error! status: ${response.status}`);
-      (error as any).response = { data: errorData, status: response.status };
+      (error as Record<string, unknown>).response = { data: errorData, status: response.status };
       throw error;
     }
     

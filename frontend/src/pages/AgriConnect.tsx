@@ -103,7 +103,7 @@ const AgriConnect = () => {
     navigate(`/product/${productId}`);
   };
 
-  const handleAddToCart = async (e: React.MouseEvent, product: any) => {
+  const handleAddToCart = async (e: React.MouseEvent, product: Record<string, unknown>) => {
     e.stopPropagation(); // Prevent card click
     try {
       await addToCart(product, 1);

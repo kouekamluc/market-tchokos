@@ -48,6 +48,7 @@ Cypress.Commands.add('checkWebSocketConnection', (orderId: string) => {
   cy.window().then((win) => {
     // Check if WebSocket connection is established
     expect(win.WebSocket).to.exist
+    return win
   })
 })
 
@@ -70,6 +71,7 @@ Cypress.Commands.add('measureWebSocketRTT', (orderId: string) => {
       // Assert RTT is reasonable (less than 500ms for local testing)
       expect(rtt).to.be.lessThan(500)
     }, 100)
+    return win
   })
 })
 
@@ -111,6 +113,7 @@ Cypress.Commands.add('testRealTimeUpdates', (orderId: string) => {
 
 // Extend Cypress namespace
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       login(email: string, password: string): Chainable<void>

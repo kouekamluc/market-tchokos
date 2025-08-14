@@ -122,7 +122,7 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     const saved = localStorage.getItem('chronoconnect_orders');
     if (saved) {
       try {
-        const parsedOrders = JSON.parse(saved).map((order: any) => ({
+        const parsedOrders = JSON.parse(saved).map((order: Record<string, unknown>) => ({
           ...order,
           createdAt: new Date(order.createdAt),
           updatedAt: new Date(order.updatedAt),
@@ -132,7 +132,7 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
             ...order.tracking,
             estimatedDelivery: new Date(order.tracking.estimatedDelivery),
             actualDelivery: order.tracking.actualDelivery ? new Date(order.tracking.actualDelivery) : undefined,
-            trackingHistory: order.tracking.trackingHistory.map((event: any) => ({
+            trackingHistory: order.tracking.trackingHistory.map((event: Record<string, unknown>) => ({
               ...event,
               timestamp: new Date(event.timestamp)
             }))

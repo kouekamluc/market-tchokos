@@ -59,6 +59,7 @@ describe('Customer Sees Live Driver Movement', () => {
           mockWebSocket.onopen()
         }
       }, 100)
+      return win
     })
   })
 
@@ -141,6 +142,7 @@ describe('Customer Sees Live Driver Movement', () => {
       if (map) {
         expect(map.getSource('route')).to.exist
       }
+      return win
     })
   })
 
@@ -157,6 +159,7 @@ describe('Customer Sees Live Driver Movement', () => {
     // Verify WebSocket connection is established
     cy.window().then((win) => {
       expect(win.WebSocket).to.exist
+      return win
     })
   })
 
@@ -179,6 +182,7 @@ describe('Customer Sees Live Driver Movement', () => {
         
         mockWebSocket.onmessage({ data: JSON.stringify(locationUpdate) })
       }
+      return win
     })
     
     // Verify location update is processed
@@ -203,6 +207,7 @@ describe('Customer Sees Live Driver Movement', () => {
         
         mockWebSocket.onmessage({ data: JSON.stringify(etaUpdate) })
       }
+      return win
     })
     
     // Verify ETA is updated
@@ -223,6 +228,7 @@ describe('Customer Sees Live Driver Movement', () => {
       if (mockWebSocket && mockWebSocket.onclose) {
         mockWebSocket.onclose()
       }
+      return win
     })
     
     // Should show disconnected status
@@ -242,6 +248,7 @@ describe('Customer Sees Live Driver Movement', () => {
       if (mockWebSocket && mockWebSocket.onclose) {
         mockWebSocket.onclose()
       }
+      return win
     })
     
     // Map should still be visible
@@ -253,6 +260,7 @@ describe('Customer Sees Live Driver Movement', () => {
       if (mockWebSocket && mockWebSocket.onopen) {
         mockWebSocket.onopen()
       }
+      return win
     })
     
     // Should show live tracking again
@@ -273,6 +281,7 @@ describe('Customer Sees Live Driver Movement', () => {
       }
       
       cy.stub(win, 'WebSocket').returns(mockWebSocket)
+      return win
     })
     
     cy.visit(`/order/${testOrderId}`)

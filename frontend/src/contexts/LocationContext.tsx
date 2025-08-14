@@ -55,7 +55,7 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children }) 
     const saved = localStorage.getItem('chronoconnect_saved_locations');
     if (saved) {
       try {
-        const locations = JSON.parse(saved).map((loc: any) => ({
+        const locations = JSON.parse(saved).map((loc: Record<string, unknown>) => ({
           ...loc,
           createdAt: new Date(loc.createdAt)
         }));

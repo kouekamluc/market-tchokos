@@ -24,7 +24,7 @@ const NotificationDropdown = () => {
   const notifications = notificationsData?.results || [];
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
-  const handleNotificationClick = async (notification: any) => {
+  const handleNotificationClick = async (notification: Record<string, unknown>) => {
     // Mark as read
     if (!notification.is_read) {
       try {

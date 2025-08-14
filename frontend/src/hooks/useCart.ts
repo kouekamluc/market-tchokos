@@ -30,9 +30,9 @@ export const useCart = () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       toast.success('Item added to cart!');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error('Error adding to cart:', error);
-      toast.error(error.response?.data?.error || 'Failed to add item to cart');
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to add item to cart');
     }
   });
 
@@ -45,9 +45,9 @@ export const useCart = () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       toast.success('Cart updated!');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error('Error updating cart:', error);
-      toast.error(error.response?.data?.error || 'Failed to update cart');
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to update cart');
     }
   });
 
@@ -60,9 +60,9 @@ export const useCart = () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       toast.success('Item removed from cart!');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error('Error removing from cart:', error);
-      toast.error(error.response?.data?.error || 'Failed to remove item from cart');
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to remove item from cart');
     }
   });
 
@@ -75,9 +75,9 @@ export const useCart = () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       toast.success('Cart cleared!');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error('Error clearing cart:', error);
-      toast.error(error.response?.data?.error || 'Failed to clear cart');
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to clear cart');
     }
   });
 

@@ -304,7 +304,7 @@ export default function Checkout() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <Select value={paymentMethod} onValueChange={(value: any) => setPaymentMethod(value)}>
+                <Select value={paymentMethod} onValueChange={(value: string) => setPaymentMethod(value)}>
                   <SelectTrigger className="bg-gray-700/50 border-gray-600 text-white focus:border-green-500 focus:ring-green-500">
                     <SelectValue placeholder="Select payment method" />
                   </SelectTrigger>
@@ -335,7 +335,7 @@ export default function Checkout() {
                   <div className="space-y-3 mt-4">
                     <div>
                       <Label htmlFor="mobile-provider" className="text-gray-300">Mobile Money Provider</Label>
-                      <Select value={mobileMoneyProvider} onValueChange={(value: any) => setMobileMoneyProvider(value)}>
+                      <Select value={mobileMoneyProvider} onValueChange={(value: string) => setMobileMoneyProvider(value)}>
                         <SelectTrigger className="bg-gray-700/50 border-gray-600 text-white focus:border-green-500 focus:ring-green-500">
                           <SelectValue placeholder="Select provider" />
                         </SelectTrigger>

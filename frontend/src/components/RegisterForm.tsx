@@ -43,9 +43,9 @@ export function RegisterForm() {
       })
       setStep(2)
       toast.success('Verification code sent to your phone!')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error sending verification code:', error)
-      toast.error(error.response?.data?.error || 'Failed to send verification code')
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to send verification code')
     } finally {
       setIsSendingCode(false)
     }
@@ -89,9 +89,9 @@ export function RegisterForm() {
       })
       
       toast.success('Registration successful!')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Registration error:', error)
-      toast.error(error.response?.data?.error || 'Registration failed. Please try again.')
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Registration failed. Please try again.')
     } finally {
       setIsVerifying(false)
     }

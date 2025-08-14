@@ -3,10 +3,10 @@ import { useState } from 'react';
 
 interface TrackingSocketOptions {
   orderId: string;
-  onLocationUpdate?: (data: any) => void;
-  onStatusUpdate?: (data: any) => void;
-  onETAUpdate?: (data: any) => void;
-  onOrderStatus?: (data: any) => void;
+  onLocationUpdate?: (data: Record<string, unknown>) => void;
+  onStatusUpdate?: (data: Record<string, unknown>) => void;
+  onETAUpdate?: (data: Record<string, unknown>) => void;
+  onOrderStatus?: (data: Record<string, unknown>) => void;
   onConnect?: () => void;
   onDisconnect?: () => void;
   onError?: (error: Event) => void;
@@ -16,8 +16,8 @@ interface TrackingSocketReturn {
   isConnected: boolean;
   connect: () => void;
   disconnect: () => void;
-  sendMessage: (message: any) => void;
-  lastMessage: any;
+  sendMessage: (message: Record<string, unknown>) => void;
+  lastMessage: Record<string, unknown> | null;
   connectionStatus: 'connecting' | 'connected' | 'disconnected' | 'error';
 }
 
@@ -25,7 +25,7 @@ export const useTrackingSocket = (options: TrackingSocketOptions): TrackingSocke
   const socketRef = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected' | 'error'>('disconnected');
-  const [lastMessage, setLastMessage] = useState<any>(null);
+  const [lastMessage, setLastMessage] = useState<Record<string, unknown> | null>(null);
 
   const connect = useCallback(() => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -89,7 +89,7 @@ export const useTrackingSocket = (options: TrackingSocketOptions): TrackingSocke
       console.error('Error creating tracking WebSocket:', error);
       setConnectionStatus('error');
     }
-  }, [options.orderId, options.onConnect, options.onDisconnect, options.onError, options.onLocationUpdate, options.onStatusUpdate, options.onETAUpdate, options.onOrderStatus]);
+  }, [options]);
 
   const disconnect = useCallback(() => {
     if (socketRef.current) {
@@ -100,7 +100,7 @@ export const useTrackingSocket = (options: TrackingSocketOptions): TrackingSocke
     }
   }, []);
 
-  const sendMessage = useCallback((message: any) => {
+  const sendMessage = useCallback((message: Record<string, unknown>) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(message));
     } else {

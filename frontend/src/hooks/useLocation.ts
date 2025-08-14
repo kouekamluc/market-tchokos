@@ -26,7 +26,7 @@ export function useLocation() {
     queryKey: ['locations'],
     queryFn: async () => {
       const response = await api.get('/users/addresses/');
-      return response.data.map((location: any) => ({
+      return response.data.map((location: Record<string, unknown>) => ({
         id: location.id,
         name: location.name,
         latitude: location.location.latitude,
@@ -38,8 +38,8 @@ export function useLocation() {
     },
     enabled: !!localStorage.getItem('access_token'),
     retry: false,
-    onError: (error: any) => {
-      if (error.response?.status === 401) {
+    onError: (error: unknown) => {
+      if ((error as Record<string, unknown>)?.response?.status === 401) {
         // User not authenticated, this is expected
         console.log('User not authenticated, skipping location fetch');
       } else {
@@ -67,9 +67,9 @@ export function useLocation() {
       queryClient.invalidateQueries({ queryKey: ['locations'] });
       toast.success('Location saved successfully!');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error('Error saving location:', error);
-      toast.error(error.response?.data?.error || 'Failed to save location');
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to save location');
     }
   });
 
@@ -92,9 +92,9 @@ export function useLocation() {
       queryClient.invalidateQueries({ queryKey: ['locations'] });
       toast.success('Location updated successfully!');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error('Error updating location:', error);
-      toast.error(error.response?.data?.error || 'Failed to update location');
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to update location');
     }
   });
 
@@ -107,9 +107,9 @@ export function useLocation() {
       queryClient.invalidateQueries({ queryKey: ['locations'] });
       toast.success('Location deleted successfully!');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error('Error deleting location:', error);
-      toast.error(error.response?.data?.error || 'Failed to delete location');
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to delete location');
     }
   });
 
@@ -119,9 +119,9 @@ export function useLocation() {
       const response = await api.post('/users/geocode/', { address });
       return response.data;
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error('Error geocoding address:', error);
-      toast.error(error.response?.data?.error || 'Failed to geocode address');
+      toast.error((error as Record<string, unknown>)?.response?.data?.error || 'Failed to geocode address');
     }
   });
 

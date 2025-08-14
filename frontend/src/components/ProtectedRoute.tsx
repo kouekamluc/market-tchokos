@@ -13,11 +13,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requiredRole, 
   allowedRoles 
 }) => {
-  let authContext;
-  try {
-    authContext = useAuth();
-  } catch (error) {
-    // If AuthContext is not available, show loading
+  const authContext = useAuth();
+  const location = useLocation();
+  
+  // If AuthContext is not available, show loading
+  if (!authContext) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
         <div className="text-center">
@@ -29,7 +29,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   const { isAuthenticated, isLoading, user } = authContext;
-  const location = useLocation();
 
   // Show loading while checking authentication
   if (isLoading) {

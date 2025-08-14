@@ -131,7 +131,7 @@ const Marketplace = () => {
     navigate(`/product/${productId}`);
   };
 
-  const handleAddToCart = (e: React.MouseEvent, product: any) => {
+  const handleAddToCart = (e: React.MouseEvent, product: Record<string, unknown>) => {
     e.stopPropagation(); // Prevent card click
     toast.success(`${product.name} added to cart!`);
     // Here you would typically add to cart context
